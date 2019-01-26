@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\CaseRecord;
 use App\CaseFeature;
+use App\Feature;
 
 class UnverifiedCaseController extends Controller
 {
@@ -25,6 +26,8 @@ class UnverifiedCaseController extends Controller
     
     public function create()
     {
+        $features = Feature::select('description', 'id')->get();
+        return view('unverified_case.create', compact('features'));
     }
     
     public function store()

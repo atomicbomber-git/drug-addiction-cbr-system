@@ -17,8 +17,8 @@
     </nav>
 
     <div class="my-3 text-right">
-        <a href="{{ route('base_case.create') }}" class="btn btn-dark btn-sm">
-            Tambah Basis Kasus Baru
+        <a href="{{ route('unverified_case.create') }}" class="btn btn-dark btn-sm">
+            Tambah Kasus Baru
             <i class="fa fa-plus"></i>
         </a>
     </div>
