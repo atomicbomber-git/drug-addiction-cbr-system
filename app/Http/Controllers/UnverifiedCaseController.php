@@ -19,6 +19,7 @@ class UnverifiedCaseController extends Controller
                 'case_features:feature_id,case_id,value',
                 'case_features.feature:id,description,weight',
             ])
+            ->orderByDesc('updated_at')
             ->get();
 
         return view('unverified_case.index', compact('cases'));
@@ -31,7 +32,35 @@ class UnverifiedCaseController extends Controller
     }
     
     public function store()
-    {   
+    {
+        $data = $this->validate(request(), [
+            'features' => 'array',
+            'features.*.id' => 'required|exists:features,id',
+            'features.*.value' => 'nullable',
+            'stage' => 'required|string',
+            'solution' => 'required|string'
+        ]);
+
+        DB::transaction(function() use($data) {
+            $case = CaseRecord::create([
+                'stage' => $data['stage'],
+                'solution' => $data['solution'],
+                'recommendation' => '',
+                'verified' => 0
+            ]);
+
+            foreach ($data['features'] as $feature) {
+                CaseFeature::create([
+                    'case_id' => $case->id,
+                    'feature_id' => $feature['id'],
+                    'value' => $feature['value'] ?? 0
+                ]);
+            }
+        });
+
+        return redirect()
+            ->route('unverified_case.index')
+            ->with('message-success', __('messages.create.success'));
     }
     
     public function edit(CaseRecord $case)
@@ -47,7 +76,7 @@ class UnverifiedCaseController extends Controller
     public function update(CaseRecord $case)
     {
         $data = $this->validate(request(), [
-            'value' => 'array',
+            'features' => 'array',
             'features.*.feature_id' => 'required|exists:features,id',
             'features.*.value' => 'nullable',
             'stage' => 'required|string',
