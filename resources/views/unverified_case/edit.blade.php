@@ -53,6 +53,7 @@
                         @foreach(\App\CaseRecord::STAGES as $stage)
                         <option {{ old('stage', $case->stage) == $stage ? 'selected' : '' }} value='{{ $stage }}'> {{ $stage }} </option>
                         @endforeach
+                        <option {{ old('stage', $case->stage) == NULL ? 'selected' : '' }} value=""> - </option>
                     </select>
                     <div class='invalid-feedback'>
                         {{ $errors->first('stage') }}

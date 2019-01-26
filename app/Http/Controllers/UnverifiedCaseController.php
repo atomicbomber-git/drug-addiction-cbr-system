@@ -36,16 +36,11 @@ class UnverifiedCaseController extends Controller
         $data = $this->validate(request(), [
             'features' => 'array',
             'features.*.id' => 'required|exists:features,id',
-            'features.*.value' => 'nullable',
-            'stage' => 'required|string',
-            'solution' => 'required|string'
+            'features.*.value' => 'nullable'
         ]);
 
         DB::transaction(function() use($data) {
             $case = CaseRecord::create([
-                'stage' => $data['stage'],
-                'solution' => $data['solution'],
-                'recommendation' => '',
                 'verified' => 0
             ]);
 
@@ -137,8 +132,8 @@ class UnverifiedCaseController extends Controller
             'features' => 'array',
             'features.*.feature_id' => 'required|exists:features,id',
             'features.*.value' => 'nullable',
-            'stage' => 'required|string',
-            'solution' => 'required|string'
+            'stage' => 'nullable|string',
+            'solution' => 'nullable|string'
         ]);
 
         $features = collect($data["features"])

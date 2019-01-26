@@ -17,9 +17,9 @@ class CreateCasesTable extends Migration
             $table->increments('id');
 
             $table->tinyInteger('verified');
-            $table->text('stage');
-            $table->longtext('solution');
-            $table->longtext('recommendation');
+            $table->text('stage')->nullable();
+            $table->longtext('solution')->nullable();
+            $table->longtext('recommendation')->nullable();
 
             $table->timestamps();
         });

@@ -43,7 +43,7 @@
                 </div>
                 @endforeach
 
-                <h1 class="h4 mt-5"> Diagnosa </h1>
+                {{-- <h1 class="h4 mt-5"> Diagnosa </h1>
                 <hr>
 
                 <div class='form-group'>
@@ -71,7 +71,7 @@
                     <div class='invalid-feedback'>
                         {{ $errors->first('solution') }}
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="form-group text-right">
                     <button class="btn btn-primary">
