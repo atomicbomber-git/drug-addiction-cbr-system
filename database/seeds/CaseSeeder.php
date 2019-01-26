@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\CaseRecord;
 use App\CaseFeature;
+use App\Feature;
 
 class CaseSeeder extends Seeder
 {
@@ -94,5 +95,22 @@ class CaseSeeder extends Seeder
                 ]);
             }
         }
+
+        // Seed unverified cases
+        DB::transaction(function() {
+            $feature_ids = Feature::select('id')->pluck('id');
+
+            factory(CaseRecord::class, 10)
+                ->create(['verified' => 0])
+                ->each(function($case) use($feature_ids) {
+                    foreach ($feature_ids as $feature_id) {
+                        CaseFeature::create([
+                            'case_id' => $case->id,
+                            'feature_id' => $feature_id,
+                            'value' => rand(0, 1)
+                        ]);
+                    }
+                });
+        });
     }
 }

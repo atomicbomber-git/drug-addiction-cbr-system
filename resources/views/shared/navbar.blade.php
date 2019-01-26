@@ -13,6 +13,14 @@
                         Basis Kasus
                     </a>
                 </li>
+
+                <li class='nav-item {{ Route::is('unverified_case.*') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('unverified_case.index') }}'>
+                        <i class='fa fa-list'></i>
+                        Kasus Baru
+                    </a>
+                </li>
+
                 @endauth
             </div>
 

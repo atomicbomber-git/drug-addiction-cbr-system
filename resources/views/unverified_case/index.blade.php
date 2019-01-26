@@ -1,10 +1,10 @@
 @extends('shared.layout')
-@section('title', 'Kelola Basis Kasus')
+@section('title', 'Kelola Kasus Baru')
 @section('content')
 <div class="container my-5">
     <h1 class='mb-5'>
-        <i class='fa fa-list-alt'></i>
-        Kelola Basis Kasus
+        <i class='fa fa-list'></i>
+        Kelola Kasus Baru
     </h1>
 
     @include('shared.alert.success')
@@ -12,7 +12,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"> {{ config('app.name') }} </li>
-            <li class="breadcrumb-item active"> Kelola Basis Kasus </li>
+            <li class="breadcrumb-item active"> Kelola Kasus Baru </li>
         </ol>
     </nav>
 
@@ -25,13 +25,13 @@
 
     <div class="card">
         <div class="card-header">
-            <i class="fa fa-list-alt"></i>
-            Kelola Basis Kasus
+            <i class="fa fa-list"></i>
+            Kelola Kasus Baru
         </div>
         <div class="card-body">
             <div class='table-responsive'>
                 <table class='table table-sm table-striped'>
-                   <thead class='thead thead-dark'>
+                   <thead class="thead thead-dark">
                         <tr>
                             <th> # </th>
                             <th> F1 </th>
@@ -54,26 +54,24 @@
                             <th> F18 </th>
                             <th> Tahapan </th>
                             <th> Solusi </th>
-                            {{-- <th> Saran </th> --}}
                             <th class="text-center" style="width: 10rem"> Aksi </th>
                         </tr>
                    </thead>
                    <tbody>
-                       @foreach ($base_cases as $base_case)
+                       @foreach ($cases as $case)
                         <tr>
                             <td> {{ $loop->iteration }}. </td>
-                            @foreach ($base_case->case_features as $case_feature)
+                            @foreach ($case->case_features as $case_feature)
                             <td> {{ $case_feature->value }} </td>
                             @endforeach
-                            <td> {{ $base_case->stage }} </td>
-                            <td> {{ $base_case->solution }} </td>
-                            {{-- <td> {{ $base_case->recommendation }} </td> --}}
+                            <td> {{ $case->stage }} </td>
+                            <td> {{ $case->solution }} </td>
                             <td class="text-center">
-                                <form action='{{ route('base_case.delete', $base_case) }}' method='POST' class='d-inline-block'>
-                                    <a href="{{ route('base_case.edit', $base_case) }}" class="btn btn-dark btn-sm">
-                                        Sunting
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
+                                <a href="{{ route('unverified_case.edit', $case) }}" class="btn btn-dark btn-sm">
+                                    Sunting
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <form action='{{ route('unverified_case.delete', $case) }}' method='POST' class='d-inline-block'>
                                     @csrf
                                     <button type='submit' class='btn btn-danger btn-sm'>
                                         Hapus
@@ -86,8 +84,6 @@
                    </tbody>
                 </table>
             </div>
-
-
         </div>
     </div>
 </div>
