@@ -85,10 +85,19 @@ class UnverifiedCaseController extends Controller
 
     public function retrieve(CaseRecord $case)
     {
+        // Get all features
+        $feature_weights = Feature::select('id', 'weight')
+            ->get()
+            ->mapWithKeys(function ($feature) {
+                return [$feature->id => $feature->weight];
+            });
+
         // Get all the base cases
-        $base_cases = CaseRecord::select('id')
+        $base_cases = CaseRecord::select('id', 'stage', 'solution')
             ->with('case_features:case_id,feature_id,value')
-            ->get();
+            ->verified()
+            ->get()
+            ->keyBy('id');
 
         $base_cases->transform(function ($base_case) {
             $base_case->keyed_case_features = 
@@ -98,14 +107,28 @@ class UnverifiedCaseController extends Controller
             return $base_case;
         });
 
-        $case->load([
-            'case_features:feature_id,case_id,value',
-        ]);
-        
-        return $case;
+        $case->load(['case_features:feature_id,case_id,value']);
+        $case->keyed_case_features = $case->case_features->mapWithKeys(function($case_feature) {
+            return [$case_feature['feature_id'] => $case_feature['value']];
+        });
 
+        // Calculate similarity
+        foreach ($base_cases as $base_case) {
+            $nom = 0;
 
-        return view('unverified_case.retrieve', compact('case'));
+            foreach ($base_case->keyed_case_features as $feature_id => $value) {
+                $nom += ((($value ^ $case->keyed_case_features[$feature_id]) ? 0 : 1) * $feature_weights[$feature_id])  ;
+            }
+
+            $base_case->similarity = $nom / $feature_weights->sum();
+        }
+
+        $most_similar_cases = $base_cases
+            ->sortByDesc('similarity')
+            ->values()
+            ->take(3);
+
+        return view('unverified_case.retrieve', compact('case', 'most_similar_cases'));
     }
     
     public function update(CaseRecord $case)

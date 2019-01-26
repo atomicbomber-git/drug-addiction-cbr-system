@@ -71,12 +71,12 @@
                             <td class="text-center">
                                 <form action='{{ route('base_case.delete', $base_case) }}' method='POST' class='d-inline-block'>
                                     <a href="{{ route('base_case.edit', $base_case) }}" class="btn btn-dark btn-sm">
-                                        Sunting
+                                        {{-- Sunting --}}
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                     @csrf
                                     <button type='submit' class='btn btn-danger btn-sm'>
-                                        Hapus
+                                        {{-- Hapus --}}
                                         <i class='fa fa-trash'></i>
                                     </button>
                                 </form>
