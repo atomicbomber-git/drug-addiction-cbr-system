@@ -6,12 +6,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav mr-auto">
+                @auth
                 <li class='nav-item {{ Route::is('base_case.*') ? 'active' : '' }}'>
                     <a class='nav-link' href='{{ route('base_case.index') }}'>
                         <i class='fa fa-list-alt'></i>
                         Basis Kasus
                     </a>
                 </li>
+                @endauth
             </div>
 
             @auth
