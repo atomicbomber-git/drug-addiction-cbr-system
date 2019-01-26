@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Sistem Diagnosis TPN'),
+    'name' => 'Sistem Diagnosis TPN',
 
     /*
     |--------------------------------------------------------------------------

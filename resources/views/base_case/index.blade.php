@@ -12,9 +12,16 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"> Sistem Diagnosis TPN </li>
-            <li class="breadcrumb-item"><a href="{{ route('base_case.index') }}"> Kelola Basis Kasus </a> </li>
+            <li class="breadcrumb-item active"> Kelola Basis Kasus </li>
         </ol>
     </nav>
+
+    <div class="my-3 text-right">
+        <a href="{{ route('base_case.create') }}" class="btn btn-dark btn-sm">
+            Tambah Basis Kasus Baru
+            <i class="fa fa-plus"></i>
+        </a>
+    </div>
 
     <div class="card">
         <div class="card-header">
