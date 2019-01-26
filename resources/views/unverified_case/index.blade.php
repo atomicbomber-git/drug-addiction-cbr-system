@@ -67,14 +67,23 @@
                             <td> {{ $case->stage }} </td>
                             <td> {{ $case->solution }} </td>
                             <td class="text-center">
+                                <form action="{{ route('unverified_case.verify', $case) }}" method="POST" class="d-inline-block">
+                                    @csrf
+                                    <button class="btn btn-success btn-sm">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                </form>
+                                <a href="{{ route('unverified_case.retrieve', $case) }}" class="btn btn-dark btn-sm">
+                                    <i class="fa fa-calculator"></i>
+                                </a>
                                 <a href="{{ route('unverified_case.edit', $case) }}" class="btn btn-dark btn-sm">
-                                    Sunting
+                                    {{-- Sunting --}}
                                     <i class="fa fa-pencil"></i>
                                 </a>
                                 <form action='{{ route('unverified_case.delete', $case) }}' method='POST' class='d-inline-block'>
                                     @csrf
                                     <button type='submit' class='btn btn-danger btn-sm'>
-                                        Hapus
+                                        {{-- Hapus --}}
                                         <i class='fa fa-trash'></i>
                                     </button>
                                 </form>

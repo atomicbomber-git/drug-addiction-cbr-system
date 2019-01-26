@@ -72,6 +72,41 @@ class UnverifiedCaseController extends Controller
 
         return view('unverified_case.edit', compact('case'));
     }
+
+    public function verify(CaseRecord $case)
+    {
+        $case->verified = 1;
+        $case->update();
+
+        return redirect()
+            ->route('base_case.index')
+            ->with('message-success', __('messages.update.success'));
+    }
+
+    public function retrieve(CaseRecord $case)
+    {
+        // Get all the base cases
+        $base_cases = CaseRecord::select('id')
+            ->with('case_features:case_id,feature_id,value')
+            ->get();
+
+        $base_cases->transform(function ($base_case) {
+            $base_case->keyed_case_features = 
+                $base_case->case_features->mapWithKeys(function($case_feature) {
+                    return [$case_feature['feature_id'] => $case_feature['value']];
+                });
+            return $base_case;
+        });
+
+        $case->load([
+            'case_features:feature_id,case_id,value',
+        ]);
+        
+        return $case;
+
+
+        return view('unverified_case.retrieve', compact('case'));
+    }
     
     public function update(CaseRecord $case)
     {

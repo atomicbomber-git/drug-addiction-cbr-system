@@ -33,6 +33,8 @@ Route::group(['prefix' => '/unverified_case', 'as' => 'unverified_case.'], funct
     Route::get('/create', 'UnverifiedCaseController@create')->name('create');
     Route::post('/store', 'UnverifiedCaseController@store')->name('store');
     Route::get('/edit/{case}', 'UnverifiedCaseController@edit')->name('edit');
+    Route::get('/retrieve/{case}', 'UnverifiedCaseController@retrieve')->name('retrieve');
     Route::post('/update/{case}', 'UnverifiedCaseController@update')->name('update');
+    Route::post('/verify/{case}', 'UnverifiedCaseController@verify')->name('verify');
     Route::post('/delete/{case}', 'UnverifiedCaseController@delete')->name('delete');
 });

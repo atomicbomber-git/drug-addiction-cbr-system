@@ -15,6 +15,7 @@ class BaseCaseController extends Controller
         $base_cases = CaseRecord::query()
             ->select('id', 'stage', 'solution', 'recommendation')
             ->verified()
+            ->orderByDesc('updated_at')
             ->with([
                 'case_features:feature_id,case_id,value',
                 'case_features.feature:id,description,weight',
