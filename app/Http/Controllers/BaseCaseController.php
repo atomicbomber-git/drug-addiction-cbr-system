@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\CaseRecord;
 use App\CaseFeature;
+use App\Feature;
 
 class BaseCaseController extends Controller
 {
@@ -24,10 +25,39 @@ class BaseCaseController extends Controller
     
     public function create()
     {
+        $features = Feature::all();
+        return view('base_case.create', compact('features'));
     }
     
     public function store()
-    {   
+    {
+        $data = $this->validate(request(), [
+            'features' => 'array',
+            'features.*.id' => 'required|exists:features,id',
+            'stage' => 'required|string',
+            'solution' => 'required|string'
+        ]);
+
+        DB::transaction(function() use($data) {
+            $case = CaseRecord::create([
+                'stage' => $data['stage'],
+                'solution' => $data['solution'],
+                'recommendation' => '',
+                'verified' => 1
+            ]);
+
+            foreach ($data['features'] as $feature) {
+                CaseFeature::create([
+                    'case_id' => $case->id,
+                    'feature_id' => $feature['id'],
+                    'value' => $feature['value'] ?? 0
+                ]);
+            }
+        });
+
+        return redirect()
+            ->route('base_case.index')
+            ->with('message-success', __('messages.create.success'));
     }
     
     public function edit(CaseRecord $base_case)

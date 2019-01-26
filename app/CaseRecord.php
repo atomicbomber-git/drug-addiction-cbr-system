@@ -9,7 +9,11 @@ class CaseRecord extends Model
     protected $table = 'cases';
 
     public $fillable = [
-        'stage', 'solution', 'recommendation'
+        'stage', 'solution', 'recommendation', 'verified'
+    ];
+
+    const STAGES = [
+        'Ringan', 'Sedang', 'Berat'
     ];
 
     public function case_features() {

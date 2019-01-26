@@ -50,7 +50,7 @@
                 <div class='form-group'>
                     <label for='stage'> Tahapan: </label>
                     <select name='stage' id='stage' class='form-control'>
-                        @foreach(['Ringan', 'Sedang', 'Berat'] as $stage)
+                        @foreach(\App\CaseRecord::STAGES as $stage)
                         <option {{ old('stage', $base_case->stage) == $stage ? 'selected' : '' }} value='{{ $stage }}'> {{ $stage }} </option>
                         @endforeach
                     </select>

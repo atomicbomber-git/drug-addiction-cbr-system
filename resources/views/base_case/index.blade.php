@@ -54,7 +54,7 @@
                             <th> F18 </th>
                             <th> Tahapan </th>
                             <th> Solusi </th>
-                            <th> Saran </th>
+                            {{-- <th> Saran </th> --}}
                             <th class="text-center" style="width: 10rem"> Aksi </th>
                         </tr>
                    </thead>
@@ -67,7 +67,7 @@
                             @endforeach
                             <td> {{ $base_case->stage }} </td>
                             <td> {{ $base_case->solution }} </td>
-                            <td> {{ $base_case->recommendation }} </td>
+                            {{-- <td> {{ $base_case->recommendation }} </td> --}}
                             <td class="text-center">
                                 <form action='{{ route('base_case.delete', $base_case) }}' method='POST' class='d-inline-block'>
                                     <a href="{{ route('base_case.edit', $base_case) }}" class="btn btn-dark btn-sm">
