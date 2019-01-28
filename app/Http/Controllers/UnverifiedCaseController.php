@@ -107,19 +107,24 @@ class UnverifiedCaseController extends Controller
             return [$case_feature['feature_id'] => $case_feature['value']];
         });
 
-        // Calculate similarity
         foreach ($base_cases as $base_case) {
+            // Calculate similarity
             $nom = 0;
-
             foreach ($base_case->keyed_case_features as $feature_id => $value) {
-                $nom += ((($value ^ $case->keyed_case_features[$feature_id]) ? 0 : 1) * $feature_weights[$feature_id])  ;
+                $nom += ((($value ^ $case->keyed_case_features[$feature_id]) ? 0 : 1) * $feature_weights[$feature_id]);
             }
-
             $base_case->similarity = $nom / $feature_weights->sum();
+            
+            // Calculates euclidean distance
+            $sum = 0;
+            foreach ($base_case->keyed_case_features as $feature_id => $value) {
+                $sum += pow($value - $case->keyed_case_features[$feature_id], 2);
+            }
+            $base_case->distance = sqrt($sum);
         }
 
         $most_similar_cases = $base_cases
-            ->sortByDesc('similarity')
+            ->sortBy('distance')
             ->values()
             ->take(3);
 

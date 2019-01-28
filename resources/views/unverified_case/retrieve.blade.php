@@ -89,6 +89,7 @@
                          <th> Tahapan </th>
                          <th> Solusi </th>
                          <th> Similaritas </th>
+                         <th> Jarak Euclidean </th>
                      </tr>
                 </thead>
                 <tbody>
@@ -101,6 +102,7 @@
                          <td> {{ $case->stage }} </td>
                          <td> {{ $case->solution }} </td>
                          <td> {{ $case->similarity }} </td>
+                         <td> {{ $case->distance }} </td>
                      </tr>
                     @endforeach
                 </tbody>
