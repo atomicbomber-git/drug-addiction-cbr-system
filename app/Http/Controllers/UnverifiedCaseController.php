@@ -10,6 +10,12 @@ use App\Feature;
 
 class UnverifiedCaseController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')
+            ->except(['guestCreate', 'guestStore', 'guestRetrieve']);
+    }
+
     public function index()
     {
         $cases = CaseRecord::query()
@@ -30,6 +36,86 @@ class UnverifiedCaseController extends Controller
         $features = Feature::select('description', 'id')->get();
         return view('unverified_case.create', compact('features'));
     }
+
+    public function guestCreate()
+    {
+        $features = Feature::select('description', 'id')->get();
+        return view('unverified_case.guest_create', compact('features'));
+    }
+
+    public function guestStore()
+    {
+        $data = $this->validate(request(), [
+            'features' => 'array',
+            'features.*.id' => 'required|exists:features',
+            'features.*.value' => 'nullable'
+        ]);
+
+        DB::transaction(function() use($data) {
+            $case = CaseRecord::create(['verified' => 0]);
+
+            foreach ($data['features'] as $feature) {
+                CaseFeature::create([
+                    'case_id' => $case->id,
+                    'feature_id' => $feature['id'],
+                    'value' => $feature['value'] ?? 0
+                ]);
+            }
+
+            session(['new_case' => $case]);
+        });
+
+        return redirect()
+            ->route('unverified_case.guest_retrieve');
+    }
+
+    public function guestRetrieve()
+    {
+        $case = session('new_case');
+
+        // Get all features
+        $feature_weights = Feature::select('id', 'weight')
+            ->get()
+            ->mapWithKeys(function ($feature) {
+                return [$feature->id => $feature->weight];
+            });
+
+        // Get all the base cases
+        $base_cases = CaseRecord::select('id', 'stage', 'solution')
+            ->with('case_features:case_id,feature_id,value')
+            ->verified()
+            ->get()
+            ->keyBy('id');
+
+        $base_cases->transform(function ($base_case) {
+            $base_case->keyed_case_features = 
+                $base_case->case_features->mapWithKeys(function($case_feature) {
+                    return [$case_feature['feature_id'] => $case_feature['value']];
+                });
+            return $base_case;
+        });
+
+        $case->load(['case_features:feature_id,case_id,value']);
+        $case->keyed_case_features = $case->case_features->mapWithKeys(function($case_feature) {
+            return [$case_feature['feature_id'] => $case_feature['value']];
+        });
+
+        foreach ($base_cases as $base_case) {
+            // Calculate similarity
+            $nom = 0;
+            foreach ($base_case->keyed_case_features as $feature_id => $value) {
+                $nom += ((($value ^ $case->keyed_case_features[$feature_id]) ? 0 : 1) * $feature_weights[$feature_id]);
+            }
+            $base_case->similarity = $nom / $feature_weights->sum();
+        }
+
+        $most_similar_case = $base_cases
+            ->sortByDesc('similarity')
+            ->values()
+            ->first();
+
+        return view('unverified_case.guest_retrieve', compact('case', 'most_similar_case'));
+    }
     
     public function store()
     {
@@ -40,9 +126,7 @@ class UnverifiedCaseController extends Controller
         ]);
 
         DB::transaction(function() use($data) {
-            $case = CaseRecord::create([
-                'verified' => 0
-            ]);
+            $case = CaseRecord::create(['verified' => 0]);
 
             foreach ($data['features'] as $feature) {
                 CaseFeature::create([

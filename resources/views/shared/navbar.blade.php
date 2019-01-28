@@ -22,6 +22,16 @@
                 </li>
 
                 @endauth
+
+                @guest
+                <li class='nav-item {{ Route::is('unverified_case.*') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('unverified_case.guest_create') }}'>
+                        <i class='fa fa-user-md'></i>
+                        Diagnosa Kasus
+                    </a>
+                </li>
+
+                @endguest
             </div>
 
             @auth

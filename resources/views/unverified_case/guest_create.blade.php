@@ -1,32 +1,27 @@
 @extends('shared.layout')
-@section('title', 'Tambah Kasus Baru')
+@section('title', 'Diagnosa Kasus')
 @section('content')
 <div class="container my-5">
     <h1 class='mb-5'>
-        <i class='fa fa-plus'></i>
-        Tambah Kasus Baru
+        <i class='fa fa-user-md'></i>
+        Diagnosa Kasus
     </h1>
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"> Sistem Diagnosis TPN </li>
-            <li class="breadcrumb-item"> <a href="{{ route('unverified_case.index') }}"> Kelola Kasus Baru </a> </li>
-            <li class="breadcrumb-item active"> Tambah Kasus Baru </li>
+            <li class="breadcrumb-item active"> Diagnosa Kasus </li>
         </ol>
     </nav>
-
+    
     <div class="card">
         <div class="card-header">
-            <i class="fa fa-plus"></i>
-            Tambah Kasus Baru
+            <i class="fa fa-user-md"></i>
+            Diagnosa Kasus
         </div>
         <div class="card-body">
-            
-            <form method='POST' action='{{ route('unverified_case.store') }}'>
+            <form action="{{ route('unverified_case.guest_store') }}" method="POST">
                 @csrf
-                <h1 class="h4"> Gejala </h1>
-                <hr>
-            
                 @foreach ($features as $feature)
                 <div class='form-group'>
                     <div class="custom-control custom-checkbox">
@@ -43,14 +38,12 @@
                 </div>
                 @endforeach
 
-                <div class="form-group text-right">
+                <div class="text-right">
                     <button class="btn btn-primary">
-                        Tambah Data
-                        <i class="fa fa-check"></i>
+                        Lakukan Diagnosa
                     </button>
                 </div>
-            
-            </form>
+           </form>
         </div>
     </div>
 </div>
