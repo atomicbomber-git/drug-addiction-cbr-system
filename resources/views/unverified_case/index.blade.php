@@ -17,7 +17,7 @@
     </nav>
 
     <div class="my-3 text-right">
-        <a href="{{ route('unverified_case.create') }}" class="btn btn-dark btn-sm">
+        <a href="{{ route('unverified_case.create') }}" class="btn btn-dark btn-sm form-delete-case">
             Tambah Kasus Baru
             <i class="fa fa-plus"></i>
         </a>
@@ -80,7 +80,7 @@
                                     {{-- Sunting --}}
                                     <i class="fa fa-pencil"></i>
                                 </a>
-                                <form action='{{ route('unverified_case.delete', $case) }}' method='POST' class='d-inline-block'>
+                                <form action='{{ route('unverified_case.delete', $case) }}' method='POST' class='d-inline-block form-delete-case'>
                                     @csrf
                                     <button type='submit' class='btn btn-danger btn-sm'>
                                         {{-- Hapus --}}
@@ -96,4 +96,32 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/sweetalert.min.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.form-delete-case').each((i, form) => {
+            $(form).on('submit', e => {
+                e.preventDefault()
+
+                swal({
+                    title: "Konfirmasi Penghapusan",
+                    text: "Apakah Anda yakin Anda hendak menghapus berkas ini?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $(form).off('submit')
+                            .submit()
+                    }
+                });
+            })
+        })
+    })
+</script>
 @endsection

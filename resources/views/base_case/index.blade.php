@@ -69,7 +69,7 @@
                             <td> {{ $base_case->solution }} </td>
                             {{-- <td> {{ $base_case->recommendation }} </td> --}}
                             <td class="text-center">
-                                <form action='{{ route('base_case.delete', $base_case) }}' method='POST' class='d-inline-block'>
+                                <form action='{{ route('base_case.delete', $base_case) }}' method='POST' class='form-delete-case d-inline-block'>
                                     <a href="{{ route('base_case.edit', $base_case) }}" class="btn btn-dark btn-sm">
                                         {{-- Sunting --}}
                                         <i class="fa fa-pencil"></i>
@@ -91,4 +91,32 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/sweetalert.min.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.form-delete-case').each((i, form) => {
+            $(form).on('submit', e => {
+                e.preventDefault()
+
+                swal({
+                    title: "Konfirmasi Penghapusan",
+                    text: "Apakah Anda yakin Anda hendak menghapus berkas ini?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $(form).off('submit')
+                            .submit()
+                    }
+                });
+            })
+        })
+    })
+</script>
 @endsection
