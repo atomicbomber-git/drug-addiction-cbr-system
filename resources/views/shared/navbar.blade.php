@@ -7,6 +7,8 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav mr-auto">
 
+                @if(($has_navbar ?? TRUE ))
+
                 @if(!auth()->check() || session('mode-customer'))
 
                 <li class='nav-item {{ Route::is('guest.home') ? 'active' : '' }}'>
@@ -68,6 +70,7 @@
                 </li>
 
                 @endauth
+                @endif
                 @endif
             </div>
 

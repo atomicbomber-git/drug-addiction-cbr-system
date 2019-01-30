@@ -30,6 +30,11 @@ class LoginController extends Controller
         return redirect()->route('login');
     }
 
+    public function showLoginForm()
+    {
+        return view('auth.login', ['has_navbar' => FALSE]);
+    }
+
     /**
      * Create a new controller instance.
      *
