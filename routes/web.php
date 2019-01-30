@@ -14,10 +14,14 @@
 Auth::routes();
 
 Route::get('/', function() {
-    return redirect()->route('unverified_case.guest_create');
+    return redirect()->route('guest.home');
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::view('/guest_about', 'guest.about')->name('guest.about');
+Route::view('/guest_home', 'guest.home')->name('guest.home');
+Route::view('/guest_help', 'guest.help')->name('guest.help');
 
 Route::group(['prefix' => '/base_case', 'as' => 'base_case.'], function() {
     Route::get('/index', 'BaseCaseController@index')->name('index');
@@ -31,11 +35,9 @@ Route::group(['prefix' => '/base_case', 'as' => 'base_case.'], function() {
 Route::group(['prefix' => '/unverified_case', 'as' => 'unverified_case.'], function() {
     Route::get('/index', 'UnverifiedCaseController@index')->name('index');
     Route::get('/create', 'UnverifiedCaseController@create')->name('create');
-    
     Route::get('/guest_create', 'UnverifiedCaseController@guestCreate')->name('guest_create');
     Route::post('/guest_store', 'UnverifiedCaseController@guestStore')->name('guest_store');
     Route::get('/guest_retrieve', 'UnverifiedCaseController@guestRetrieve')->name('guest_retrieve');
-
     Route::post('/store', 'UnverifiedCaseController@store')->name('store');
     Route::get('/edit/{case}', 'UnverifiedCaseController@edit')->name('edit');
     Route::get('/retrieve/{case}', 'UnverifiedCaseController@retrieve')->name('retrieve');

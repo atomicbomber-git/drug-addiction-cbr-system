@@ -24,10 +24,31 @@
                 @endauth
 
                 @guest
+                <li class='nav-item {{ Route::is('guest.home') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('guest.home') }}'>
+                        <i class='fa fa-home'></i>
+                        Home
+                    </a>
+                </li>
+
                 <li class='nav-item {{ Route::is('unverified_case.*') ? 'active' : '' }}'>
                     <a class='nav-link' href='{{ route('unverified_case.guest_create') }}'>
                         <i class='fa fa-user-md'></i>
-                        Diagnosa Kasus
+                        Konsultasi
+                    </a>
+                </li>
+
+                <li class='nav-item {{ Route::is('guest.help') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('guest.help') }}'>
+                        <i class='fa fa-question'></i>
+                        Bantuan
+                    </a>
+                </li>
+
+                <li class='nav-item {{ Route::is('guest.about') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('guest.about') }}'>
+                        <i class='fa fa-info'></i>
+                        Tentang Saya
                     </a>
                 </li>
 
@@ -43,12 +64,6 @@
                 </button>
             </form>
             @endauth
-            @guest
-            <a href="{{ route('login') }}" class="btn btn-primary">
-                Log In
-                <i class="fa fa-sign-in"></i>
-            </a>
-            @endguest
         </div>
     </div>
 </nav>

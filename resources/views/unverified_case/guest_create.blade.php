@@ -10,14 +10,14 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"> Sistem Diagnosis TPN </li>
-            <li class="breadcrumb-item active"> Diagnosa Kasus </li>
+            <li class="breadcrumb-item active"> Konsultasi </li>
         </ol>
     </nav>
     
     <div class="card">
         <div class="card-header">
             <i class="fa fa-user-md"></i>
-            Diagnosa Kasus
+            Konsultasi
         </div>
         <div class="card-body">
             <form action="{{ route('unverified_case.guest_store') }}" method="POST">
