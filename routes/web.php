@@ -32,6 +32,13 @@ Route::group(['prefix' => '/base_case', 'as' => 'base_case.'], function() {
     Route::post('/delete/{base_case}', 'BaseCaseController@delete')->name('delete');
 });
 
+Route::group(['prefix' => '/feature', 'as' => 'feature.'], function() {
+    Route::get('/index', 'FeatureController@index')->name('index');
+    Route::post('/store', 'FeatureController@store')->name('store');
+    Route::get('/edit/{feature}', 'FeatureController@edit')->name('edit');
+    Route::post('/update/{feature}', 'FeatureController@update')->name('update');
+});
+
 Route::group(['prefix' => '/unverified_case', 'as' => 'unverified_case.'], function() {
     Route::get('/index', 'UnverifiedCaseController@index')->name('index');
     Route::get('/create', 'UnverifiedCaseController@create')->name('create');

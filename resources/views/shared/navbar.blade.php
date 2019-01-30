@@ -20,6 +20,13 @@
                         Kasus Baru
                     </a>
                 </li>
+                
+                <li class='nav-item {{ Route::is('feature.*') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('feature.index') }}'>
+                        <i class='fa fa-bars'></i>
+                        Fitur
+                    </a>
+                </li>
 
                 @endauth
 
