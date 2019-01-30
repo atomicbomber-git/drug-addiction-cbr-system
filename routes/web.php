@@ -14,7 +14,12 @@
 Auth::routes();
 
 Route::get('/', function() {
-    return redirect()->route('guest.home');
+    if (auth()->check()) {
+        return redirect()->route('base_case.index');
+    }
+    else {
+        return redirect()->route('guest.home');
+    }
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
