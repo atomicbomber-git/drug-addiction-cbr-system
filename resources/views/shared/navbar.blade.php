@@ -6,6 +6,38 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav mr-auto">
+
+                @if(!auth()->check() || session('mode-customer'))
+
+                <li class='nav-item {{ Route::is('guest.home') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('guest.home') }}'>
+                        <i class='fa fa-home'></i>
+                        Home
+                    </a>
+                </li>
+
+                <li class='nav-item {{ Route::is('unverified_case.*') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('unverified_case.guest_create') }}'>
+                        <i class='fa fa-user-md'></i>
+                        Konsultasi
+                    </a>
+                </li>
+
+                <li class='nav-item {{ Route::is('guest.help') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('guest.help') }}'>
+                        <i class='fa fa-question'></i>
+                        Bantuan
+                    </a>
+                </li>
+
+                <li class='nav-item {{ Route::is('guest.about') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('guest.about') }}'>
+                        <i class='fa fa-info'></i>
+                        Tentang Saya
+                    </a>
+                </li>
+
+                @else
                 @auth
                 <li class='nav-item {{ Route::is('base_case.*') ? 'active' : '' }}'>
                     <a class='nav-link' href='{{ route('base_case.index') }}'>
@@ -36,40 +68,18 @@
                 </li>
 
                 @endauth
-
-                @guest
-                <li class='nav-item {{ Route::is('guest.home') ? 'active' : '' }}'>
-                    <a class='nav-link' href='{{ route('guest.home') }}'>
-                        <i class='fa fa-home'></i>
-                        Home
-                    </a>
-                </li>
-
-                <li class='nav-item {{ Route::is('unverified_case.*') ? 'active' : '' }}'>
-                    <a class='nav-link' href='{{ route('unverified_case.guest_create') }}'>
-                        <i class='fa fa-user-md'></i>
-                        Konsultasi
-                    </a>
-                </li>
-
-                <li class='nav-item {{ Route::is('guest.help') ? 'active' : '' }}'>
-                    <a class='nav-link' href='{{ route('guest.help') }}'>
-                        <i class='fa fa-question'></i>
-                        Bantuan
-                    </a>
-                </li>
-
-                <li class='nav-item {{ Route::is('guest.about') ? 'active' : '' }}'>
-                    <a class='nav-link' href='{{ route('guest.about') }}'>
-                        <i class='fa fa-info'></i>
-                        Tentang Saya
-                    </a>
-                </li>
-
-                @endguest
+                @endif
             </div>
 
             @auth
+            <a class="btn btn-light mr-2" href="{{ route('mode_switch') }}">
+                @if(session('mode-customer'))
+                Website Administrator
+                @else
+                Website Umum
+                @endif
+            </a>
+
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button class="btn btn-danger">
