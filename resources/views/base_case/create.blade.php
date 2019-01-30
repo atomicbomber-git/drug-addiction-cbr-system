@@ -59,17 +59,14 @@
                 </div>
 
                 <div class='form-group'>
-                    <label for='solution'> Solusi: </label>
-                
-                    <textarea
-                        id='solution' name='solution'
-                        class='form-control {{ !$errors->has('solution') ?: 'is-invalid' }}'
-                        col='30' row='6'
-                        placeholder="Solusi"
-                        ></textarea>
-                
+                    <label for='solution_id'> Solusi: </label>
+                    <select name='solution_id' id='solution_id' class='form-control'>
+                        @foreach($solutions as $solution)
+                        <option {{ old('solution_id') !== $solution->id ?: 'selected' }} value='{{ $solution->id }}'> {{ $solution->content }} </option>
+                        @endforeach
+                    </select>
                     <div class='invalid-feedback'>
-                        {{ $errors->first('solution') }}
+                        {{ $errors->first('solution_id') }}
                     </div>
                 </div>
 

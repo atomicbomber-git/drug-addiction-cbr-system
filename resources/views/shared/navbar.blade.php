@@ -28,6 +28,13 @@
                     </a>
                 </li>
 
+                <li class='nav-item {{ Route::is('solution.*') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('solution.index') }}'>
+                        <i class='fa fa-comment-o'></i>
+                        Solusi
+                    </a>
+                </li>
+
                 @endauth
 
                 @guest

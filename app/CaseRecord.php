@@ -9,7 +9,7 @@ class CaseRecord extends Model
     protected $table = 'cases';
 
     public $fillable = [
-        'stage', 'solution', 'recommendation', 'verified'
+        'stage', 'solution_id', 'recommendation', 'verified'
     ];
 
     const STAGES = [
@@ -26,7 +26,14 @@ class CaseRecord extends Model
         return $query->where('verified', 0);
     }
 
-    public function case_features() {
+    public function case_features()
+    {
         return $this->hasMany(CaseFeature::class, 'case_id');
+    }
+
+    public function solution()
+    {
+        return $this->belongsTo(Solution::class)
+            ->withDefault(['content' => '']);
     }
 }

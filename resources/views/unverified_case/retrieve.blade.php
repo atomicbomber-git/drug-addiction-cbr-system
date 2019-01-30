@@ -56,7 +56,7 @@
                         <td> {{ $case_feature->value }} </td>
                         @endforeach
                         <td> {{ $case->stage }} </td>
-                        <td> {{ $case->solution }} </td>
+                        <td> {{ $case->solution->content }} </td>
                     </tr>
                 </tbody>
             </table>
@@ -100,7 +100,7 @@
                          <td> {{ $case_feature->value }} </td>
                          @endforeach
                          <td> {{ $case->stage }} </td>
-                         <td> {{ $case->solution }} </td>
+                         <td> {{ $case->solution->content }} </td>
                          <td> {{ $case->similarity }} </td>
                          <td> {{ $case->distance }} </td>
                      </tr>

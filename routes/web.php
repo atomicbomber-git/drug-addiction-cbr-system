@@ -54,3 +54,12 @@ Route::group(['prefix' => '/unverified_case', 'as' => 'unverified_case.'], funct
     Route::post('/verify/{case}', 'UnverifiedCaseController@verify')->name('verify');
     Route::post('/delete/{case}', 'UnverifiedCaseController@delete')->name('delete');
 });
+
+Route::group(['prefix' => '/solution', 'as' => 'solution.'], function() {
+    Route::get('/index', 'SolutionController@index')->name('index');
+    Route::get('/create', 'SolutionController@create')->name('create');
+    Route::post('/store', 'SolutionController@store')->name('store');
+    Route::get('/edit/{solution}', 'SolutionController@edit')->name('edit');
+    Route::post('/update/{solution}', 'SolutionController@update')->name('update');
+    Route::post('/delete/{solution}', 'SolutionController@delete')->name('delete');
+});

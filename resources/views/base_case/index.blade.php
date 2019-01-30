@@ -66,7 +66,7 @@
                             <td> {{ $case_feature->value }} </td>
                             @endforeach
                             <td> {{ $base_case->stage }} </td>
-                            <td> {{ $base_case->solution }} </td>
+                            <td> {{ $base_case->solution->content }} </td>
                             {{-- <td> {{ $base_case->recommendation }} </td> --}}
                             <td class="text-center">
                                 <form action='{{ route('base_case.delete', $base_case) }}' method='POST' class='form-delete-case d-inline-block'>

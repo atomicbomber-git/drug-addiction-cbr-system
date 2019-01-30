@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\CaseRecord;
 use App\CaseFeature;
 use App\Feature;
+use App\Solution;
 
 class UnverifiedCaseController extends Controller
 {
@@ -19,9 +20,10 @@ class UnverifiedCaseController extends Controller
     public function index()
     {
         $cases = CaseRecord::query()
-            ->select('id', 'stage', 'solution', 'recommendation')
+            ->select('id', 'stage', 'solution_id', 'recommendation')
             ->unverified()
             ->with([
+                'solution:id,content',
                 'case_features:feature_id,case_id,value',
                 'case_features.feature:id,description,weight',
             ])
@@ -81,8 +83,11 @@ class UnverifiedCaseController extends Controller
             });
 
         // Get all the base cases
-        $base_cases = CaseRecord::select('id', 'stage', 'solution')
-            ->with('case_features:case_id,feature_id,value')
+        $base_cases = CaseRecord::select('id', 'stage', 'solution_id')
+            ->with([
+                'case_features:case_id,feature_id,value',
+                'solution:id,content'
+            ])
             ->verified()
             ->get()
             ->keyBy('id');
@@ -95,7 +100,11 @@ class UnverifiedCaseController extends Controller
             return $base_case;
         });
 
-        $case->load(['case_features:feature_id,case_id,value']);
+        $case->load([
+            'case_features:feature_id,case_id,value',
+            'solution:id,content'
+        ]);
+
         $case->keyed_case_features = $case->case_features->mapWithKeys(function($case_feature) {
             return [$case_feature['feature_id'] => $case_feature['value']];
         });
@@ -149,7 +158,9 @@ class UnverifiedCaseController extends Controller
             'case_features.feature:id,description,weight',
         ]);
 
-        return view('unverified_case.edit', compact('case'));
+        $solutions = Solution::select('id', 'content')->get();
+
+        return view('unverified_case.edit', compact('case', 'solutions'));
     }
 
     public function verify(CaseRecord $case)
@@ -172,8 +183,11 @@ class UnverifiedCaseController extends Controller
             });
 
         // Get all the base cases
-        $base_cases = CaseRecord::select('id', 'stage', 'solution')
-            ->with('case_features:case_id,feature_id,value')
+        $base_cases = CaseRecord::select('id', 'stage', 'solution_id')
+            ->with([
+                'case_features:case_id,feature_id,value',
+                'solution:id,content'
+            ])
             ->verified()
             ->get()
             ->keyBy('id');
@@ -186,7 +200,11 @@ class UnverifiedCaseController extends Controller
             return $base_case;
         });
 
-        $case->load(['case_features:feature_id,case_id,value']);
+        $case->load([
+            'case_features:feature_id,case_id,value',
+            'solution:id,content'
+        ]);
+
         $case->keyed_case_features = $case->case_features->mapWithKeys(function($case_feature) {
             return [$case_feature['feature_id'] => $case_feature['value']];
         });
@@ -222,7 +240,7 @@ class UnverifiedCaseController extends Controller
             'features.*.feature_id' => 'required|exists:features,id',
             'features.*.value' => 'nullable',
             'stage' => 'nullable|string',
-            'solution' => 'nullable|string'
+            'solution_id' => 'nullable|exists:solutions,id'
         ]);
 
         $features = collect($data["features"])
@@ -242,7 +260,7 @@ class UnverifiedCaseController extends Controller
 
                 $case->update([
                     'stage' => $data['stage'],
-                    'solution' => $data['solution']
+                    'solution_id' => $data['solution_id']
                 ]);
             }
         });

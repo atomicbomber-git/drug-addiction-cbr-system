@@ -50,7 +50,7 @@
                 <tbody>
                      <tr>
                          <td> {{ $most_similar_case->stage }} </td>
-                         <td> {{ $most_similar_case->solution }} </td>
+                         <td> {{ $most_similar_case->solution->content }} </td>
                          <td> {{ $most_similar_case->similarity * 100 }}% </td>
                      </tr>
                 </tbody>

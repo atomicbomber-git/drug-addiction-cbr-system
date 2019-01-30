@@ -7,16 +7,18 @@ use Illuminate\Support\Facades\DB;
 use App\CaseRecord;
 use App\CaseFeature;
 use App\Feature;
+use App\Solution;
 
 class BaseCaseController extends Controller
 {
     public function index()
     {
         $base_cases = CaseRecord::query()
-            ->select('id', 'stage', 'solution', 'recommendation')
+            ->select('id', 'stage', 'solution_id', 'recommendation')
             ->verified()
             ->orderByDesc('updated_at')
             ->with([
+                'solution:id,content',
                 'case_features:feature_id,case_id,value',
                 'case_features.feature:id,description,weight',
             ])
@@ -27,8 +29,9 @@ class BaseCaseController extends Controller
     
     public function create()
     {
-        $features = Feature::all();
-        return view('base_case.create', compact('features'));
+        $solutions = Solution::select('id', 'content')->get();
+        $features = Feature::select('id', 'description')->get();
+        return view('base_case.create', compact('solutions', 'features'));
     }
     
     public function store()
@@ -37,13 +40,13 @@ class BaseCaseController extends Controller
             'features' => 'array',
             'features.*.id' => 'required|exists:features,id',
             'stage' => 'required|string',
-            'solution' => 'required|string'
+            'solution_id' => 'required|exists:solutions,id'
         ]);
 
         DB::transaction(function() use($data) {
             $case = CaseRecord::create([
                 'stage' => $data['stage'],
-                'solution' => $data['solution'],
+                'solution_id' => $data['solution_id'],
                 'recommendation' => '',
                 'verified' => 1
             ]);
@@ -67,9 +70,12 @@ class BaseCaseController extends Controller
         $base_case->load([
             'case_features:feature_id,case_id,value',
             'case_features.feature:id,description,weight',
+            'solution:id,content'
         ]);
 
-        return view('base_case.edit', compact('base_case'));
+        $solutions = Solution::select('id', 'content')->get();
+
+        return view('base_case.edit', compact('base_case', 'solutions'));
     }
     
     public function update(CaseRecord $base_case)
@@ -78,7 +84,7 @@ class BaseCaseController extends Controller
             'value' => 'array',
             'value.*.feature_id' => 'required|exists:features,id',
             'stage' => 'required|string',
-            'solution' => 'required|string'
+            'solution_id' => 'required|exists:solutions,id'
         ]);
 
         $features = collect(request('features'))
@@ -98,7 +104,7 @@ class BaseCaseController extends Controller
 
                 $base_case->update([
                     'stage' => $data['stage'],
-                    'solution' => $data['solution']
+                    'solution_id' => $data['solution_id']
                 ]);
             }
         });

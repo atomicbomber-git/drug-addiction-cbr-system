@@ -65,7 +65,7 @@
                             <td> {{ $case_feature->value }} </td>
                             @endforeach
                             <td> {{ $case->stage }} </td>
-                            <td> {{ $case->solution }} </td>
+                            <td> {{ $case->solution->content }} </td>
                             <td class="text-center">
                                 <form action="{{ route('unverified_case.verify', $case) }}" method="POST" class="d-inline-block">
                                     @csrf
