@@ -28,7 +28,7 @@ class UnverifiedCaseController extends Controller
                 'case_features.feature:id,description,weight',
             ])
             ->orderByDesc('updated_at')
-            ->get();
+            ->paginate();
 
         return view('unverified_case.index', compact('cases'));
     }

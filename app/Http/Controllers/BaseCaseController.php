@@ -22,7 +22,7 @@ class BaseCaseController extends Controller
                 'case_features:feature_id,case_id,value',
                 'case_features.feature:id,description,weight',
             ])
-            ->get();
+            ->paginate();
 
         return view('base_case.index', compact('base_cases'));
     }

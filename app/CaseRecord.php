@@ -8,6 +8,8 @@ class CaseRecord extends Model
 {
     protected $table = 'cases';
 
+    protected $perPage = 10;
+
     public $fillable = [
         'stage', 'solution_id', 'recommendation', 'verified'
     ];

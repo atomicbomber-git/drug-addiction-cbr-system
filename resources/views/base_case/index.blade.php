@@ -61,7 +61,7 @@
                    <tbody>
                        @foreach ($base_cases as $base_case)
                         <tr>
-                            <td> {{ $loop->iteration }}. </td>
+                            <td> {{ $base_cases->firstItem() + $loop->index }}. </td>
                             @foreach ($base_case->case_features as $case_feature)
                             <td> {{ $case_feature->value }} </td>
                             @endforeach
@@ -87,7 +87,9 @@
                 </table>
             </div>
 
-
+            <div class="d-flex justify-content-center">
+                {{ $base_cases->links() }}
+            </div>
         </div>
     </div>
 </div>
