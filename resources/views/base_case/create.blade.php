@@ -43,7 +43,7 @@
                 </div>
                 @endforeach
 
-                <h1 class="h4 mt-5"> Diagnosa </h1>
+                <h1 class="h4 mt-5"> Diagnosis </h1>
                 <hr>
 
                 <div class='form-group'>

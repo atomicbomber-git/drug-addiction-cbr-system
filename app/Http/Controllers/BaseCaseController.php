@@ -109,7 +109,8 @@ class BaseCaseController extends Controller
             }
         });
 
-        return back()
+        return redirect()
+            ->route('base_case.index')
             ->with('message-success', __('messages.update.success'));
     }
     

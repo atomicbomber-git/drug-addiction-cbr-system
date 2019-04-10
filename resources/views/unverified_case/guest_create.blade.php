@@ -1,10 +1,10 @@
 @extends('shared.layout')
-@section('title', 'Diagnosa Kasus')
+@section('title', 'Diagnosis Kasus')
 @section('content')
 <div class="container my-5">
     <h1 class='mb-5'>
         <i class='fa fa-user-md'></i>
-        Diagnosa Kasus
+        Diagnosis Kasus
     </h1>
 
     <nav aria-label="breadcrumb">
@@ -40,7 +40,7 @@
 
                 <div class="text-right">
                     <button class="btn btn-primary">
-                        Lakukan Diagnosa
+                        Lakukan Diagnosis
                     </button>
                 </div>
            </form>

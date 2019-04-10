@@ -265,7 +265,8 @@ class UnverifiedCaseController extends Controller
             }
         });
 
-        return back()
+        return redirect()
+            ->route('unverified_case.index')
             ->with('message-success', __('messages.update.success'));
     }
     

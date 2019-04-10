@@ -22,7 +22,7 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-        return route('base_case.index');
+        return route('admin-home.show');
     }
 
     public function loggedOut()

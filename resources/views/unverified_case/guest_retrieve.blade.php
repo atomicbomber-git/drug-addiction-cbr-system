@@ -1,24 +1,24 @@
 @extends('shared.layout')
-@section('title', 'Hasil Diagnosa Kasus')
+@section('title', 'Hasil Diagnosis Kasus')
 @section('content')
 <div class="container my-5">
     <h1 class='mb-5'>
         <i class='fa fa-calculator'></i>
-        Hasil Diagnosa Kasus
+        Hasil Diagnosis Kasus
     </h1>
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"> Sistem Diagnosis TPN </li>
-            <li class="breadcrumb-item"><a href="{{ route('unverified_case.guest_create') }}"> Diagnosa Kasus </a> </li>
-            <li class="breadcrumb-item active"> Hasil Diagnosa Kasus </li>
+            <li class="breadcrumb-item"><a href="{{ route('unverified_case.guest_create') }}"> Diagnosis Kasus </a> </li>
+            <li class="breadcrumb-item active"> Hasil Diagnosis Kasus </li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-header">
             <i class="fa fa-calculator"></i>
-            Hasil Diagnosa Kasus
+            Hasil Diagnosis Kasus
         </div>
         <div class="card-body">
 
@@ -36,7 +36,7 @@
                 </div>
             @endforeach
 
-            <h1 class="h4 mt-5"> Hasil Diagnosa </h1>
+            <h1 class="h4 mt-5"> Hasil Diagnosis </h1>
             <hr class="mt-0"/>
 
             <table class='table table-sm table-striped'>

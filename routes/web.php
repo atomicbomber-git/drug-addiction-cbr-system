@@ -15,7 +15,7 @@ Auth::routes();
 
 Route::get('/', function() {
     if (auth()->check()) {
-        return redirect()->route('base_case.index');
+        return redirect()->route('admin-home.show');
     }
     else {
         return redirect()->route('guest.home');
@@ -27,6 +27,10 @@ Route::view('/guest_about', 'guest.about')->name('guest.about');
 Route::view('/guest_home', 'guest.home')->name('guest.home');
 Route::view('/guest_help', 'guest.help')->name('guest.help');
 Route::get('/switch_mode', 'ModeController@switch')->name('mode_switch');
+
+Route::group(['prefix' => '/admin-home', 'as' => 'admin-home.'], function() {
+    Route::get('/show', 'AdminHomeController@show')->name('show');
+});
 
 Route::group(['prefix' => '/base_case', 'as' => 'base_case.'], function() {
     Route::get('/index', 'BaseCaseController@index')->name('index');
