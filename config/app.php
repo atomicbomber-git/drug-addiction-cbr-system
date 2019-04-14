@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => 'Sistem Diagnosis TPN',
+    'name' => 'Sistem Diagnosis Tahapan Pengguna Narkoba',
 
     /*
     |--------------------------------------------------------------------------

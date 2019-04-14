@@ -1,6 +1,12 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href=""> {{ config('app.name') }} </a>
+        <a class="navbar-brand" href="">
+
+            <span style="font-size: 0.9rem">
+                {{ config('app.name') }}
+            </span>
+
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -35,7 +41,7 @@
                 <li class='nav-item {{ Route::is('guest.about') ? 'active' : '' }}'>
                     <a class='nav-link' href='{{ route('guest.about') }}'>
                         <i class='fa fa-info'></i>
-                        Tentang Saya
+                        Tentang Pengembang Sistem
                     </a>
                 </li>
 

@@ -1,10 +1,10 @@
 @extends('shared.layout')
-@section('title', 'Tentang Saya')
+@section('title', 'Tentang Pengembang Sistem')
 @section('content')
 <div class="container my-5">
     <h1 class='mb-5'>
         <i class='fa fa-info'></i>
-        Tentang Saya
+        Tentang Pengembang Sistem
     </h1>
 
     <div class="card">
