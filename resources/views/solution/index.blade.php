@@ -48,7 +48,7 @@
                                     <i class="fa fa-pencil"></i>
                                 </a>
 
-                                <form action='route' method='POST' class='d-inline-block'>
+                                <form action='{{ route('solution.delete', $solution) }}' method='POST' class='d-inline-block'>
                                     @csrf
                                     <button {{ $solution->cases_count > 0 ? 'disabled' : '' }} type='submit' class='btn btn-danger btn-sm'>
                                         <i class='fa fa-trash'></i>
