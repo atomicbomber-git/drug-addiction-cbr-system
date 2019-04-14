@@ -47,6 +47,13 @@
 
                 @else
                 @auth
+                <li class='nav-item {{ Route::is('admin-home.*') ? 'active' : '' }}'>
+                    <a class='nav-link' href='{{ route('admin-home.show') }}'>
+                        <i class='fa fa-home'></i>
+                        Home
+                    </a>
+                </li>
+
                 <li class='nav-item {{ Route::is('base_case.*') ? 'active' : '' }}'>
                     <a class='nav-link' href='{{ route('base_case.index') }}'>
                         <i class='fa fa-list-alt'></i>
