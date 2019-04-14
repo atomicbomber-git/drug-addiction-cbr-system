@@ -4,13 +4,11 @@
 <div class="container my-5">
     <h1 class='mb-5'>
         <i class='fa fa-question'></i>
-        Bantuan
+        Panduan Penggunaan
     </h1>
 
     <div class="card">
         <div class="card-body">
-            <h2 class="h3"> Panduan Penggunaan </h2>
-
             <ul>
                 <li>
                     Pada menu Home terdapat halaman utama pengunjung.

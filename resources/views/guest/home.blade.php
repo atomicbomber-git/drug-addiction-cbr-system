@@ -1,13 +1,14 @@
 @extends('shared.layout')
 @section('title', 'Home')
 @section('content')
-<div class="container my-5">
-    <h1 class='mb-5'>
-        <i class='fa fa-home'></i>
-        Home
-    </h1>
 
-    <img src="{{ asset("home.jpg") }}" alt="Gambar Ilustrasi Narkoba">
+<img
+    style="width: 100%; height: auto"
+    src="{{ asset("home.jpg") }}"
+    alt="Gambar Ilustrasi Narkoba">
+
+<div class="container my-5">
+    
 </div>
 
 @endsection

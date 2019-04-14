@@ -41,7 +41,7 @@
                 <li class='nav-item {{ Route::is('guest.about') ? 'active' : '' }}'>
                     <a class='nav-link' href='{{ route('guest.about') }}'>
                         <i class='fa fa-info'></i>
-                        Tentang Pengembang Sistem
+                        Tentang Saya
                     </a>
                 </li>
 

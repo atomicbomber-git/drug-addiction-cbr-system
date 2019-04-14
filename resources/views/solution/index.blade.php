@@ -48,7 +48,7 @@
                                     <i class="fa fa-pencil"></i>
                                 </a>
 
-                                <form action='{{ route('solution.delete', $solution) }}' method='POST' class='d-inline-block'>
+                                <form action='{{ route('solution.delete', $solution) }}' method='POST' class='d-inline-block form-delete'>
                                     @csrf
                                     <button {{ $solution->cases_count > 0 ? 'disabled' : '' }} type='submit' class='btn btn-danger btn-sm'>
                                         <i class='fa fa-trash'></i>
@@ -63,4 +63,32 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/sweetalert.min.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.form-delete').each((i, form) => {
+            $(form).on('submit', e => {
+                e.preventDefault()
+
+                swal({
+                    title: "Konfirmasi Penghapusan",
+                    text: "Apakah Anda yakin Anda hendak menghapus berkas ini?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $(form).off('submit')
+                            .submit()
+                    }
+                });
+            })
+        })
+    })
+</script>
 @endsection
