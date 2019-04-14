@@ -55,6 +55,41 @@
                      </tr>
                 </tbody>
              </table>
+             
+             <h1 class="h4 mt-5"> Saran </h1>
+             <hr class="mt-0"/>
+
+             <div>
+                <p>
+                    Tindakan yang dilakukan jika ada keluarga, kerabat/tetangga sebagai pengguna
+                    narkoba :
+                </p>
+                <ol>
+                    <li>
+                        Laporkan pada kader penyuluh narkotika, pengurus RT/RW setempat, IPWL
+                        (Institusi Penerima Wajib Lapor) Kemenkes, IPWL Kemensos, IPWL BNN.
+                    </li>
+                    <li>Dukung pengguna dan keluarganya untuk direhabilitasi.</li>
+                    <li>
+                        Memastikan untuk mendapatkan informasi bahwa:<br />
+                        <ul>
+                            <li>Pengguna dapat dipulihkan</li>
+                            <li>
+                                Membawa pengguna ke fasilitas pelayanan rehabilitasi terdekat.
+                            </li>
+                            <li>
+                                Dengan memenuhi proses wajib lapor, pengguna akan mendapatkan
+                                rehabilitasi dan Kartu Wajib Lapor sehingga tidak
+                                dipidana/proses hukum.
+                            </li>
+                            <li>
+                                Kesempatan wajib lapor berlaku dua kali. Apabila tertangkap
+                                tangan menyalahgunakan lagi akan diproses hukum.
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+             </div>
         </div>
     </div>
 </div>
