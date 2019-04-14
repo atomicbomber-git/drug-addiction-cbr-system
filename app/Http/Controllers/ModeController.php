@@ -10,11 +10,11 @@ class ModeController extends Controller
     {
         if (session('mode-customer')) {
             session()->forget('mode-customer');
-            return redirect()->route('admin-home.show');
+            return redirect(route('admin-home.show'));
         }
         else {
             session(['mode-customer' => TRUE]);
-            return redirect()->route('guest.home');
+            return redirect(route('guest.home'));
         }
     }
 }

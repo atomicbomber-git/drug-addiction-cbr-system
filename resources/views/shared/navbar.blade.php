@@ -1,6 +1,6 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="">
+        <a class="navbar-brand" href="/">
 
             <span style="font-size: 0.9rem">
                 {{ config('app.name') }}
