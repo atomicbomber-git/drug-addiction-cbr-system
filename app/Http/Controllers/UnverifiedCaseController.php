@@ -123,6 +123,14 @@ class UnverifiedCaseController extends Controller
             ->values()
             ->first();
 
+        
+        CaseRecord::find($case->id)
+            ->update([
+                "stage" => $most_similar_case->stage,
+                "solution_id" => $most_similar_case->solution_id,
+                "recommendation" => $most_similar_case->recommendation,
+            ]);
+
         return view('unverified_case.guest_retrieve', compact('case', 'most_similar_case'));
     }
     
