@@ -49,8 +49,8 @@
                 </thead>
                 <tbody>
                      <tr>
-                         <td> {{ $most_similar_case->stage }} </td>
-                         <td> {{ $most_similar_case->solution->content }} </td>
+                         <td> {{ $case->stage }} </td>
+                         <td> {{ $case->solution->content }} </td>
                          <td> {{ $most_similar_case->similarity * 100 }}% </td>
                      </tr>
                 </tbody>
