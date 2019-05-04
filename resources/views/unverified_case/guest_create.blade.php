@@ -17,7 +17,7 @@
     <div class="card">
         <div class="card-header">
             <i class="fa fa-user-md"></i>
-            Konsultasi
+            Silakan Lakukan Konsultasi
         </div>
         <div class="card-body">
             <form action="{{ route('unverified_case.guest_store') }}" method="POST">

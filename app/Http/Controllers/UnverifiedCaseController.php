@@ -124,12 +124,11 @@ class UnverifiedCaseController extends Controller
             ->first();
 
         $stage = $base_cases
-            ->mode("stage")
             ->sortByDesc('similarity')
             ->values()
             ->take(3)
-            ->first();
-        
+            ->mode("stage")[0];
+
         CaseRecord::find($case->id)
             ->update([
                 "stage" => $stage,
