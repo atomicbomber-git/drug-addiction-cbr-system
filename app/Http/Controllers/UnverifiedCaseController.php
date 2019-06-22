@@ -110,12 +110,7 @@ class UnverifiedCaseController extends Controller
         });
 
         foreach ($base_cases as $base_case) {
-            // Calculate similarity
-            $nom = 0;
-            foreach ($base_case->keyed_case_features as $feature_id => $value) {
-                $nom += ((($value ^ $case->keyed_case_features[$feature_id]) ? 0 : 1) * $feature_weights[$feature_id]);
-            }
-            $base_case->similarity = $nom / $feature_weights->sum();
+            $base_case->similarity = $base_case->calculateSimilarity($case);
         }
 
         $most_similar_case = $base_cases
