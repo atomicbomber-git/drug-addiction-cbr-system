@@ -224,17 +224,8 @@ class UnverifiedCaseController extends Controller
             'solution:id,content'
         ]);
 
-        $case->keyed_case_features = $case->case_features->mapWithKeys(function($case_feature) {
-            return [$case_feature['feature_id'] => $case_feature['value']];
-        });
-
         foreach ($base_cases as $base_case) {
-            // Calculate similarity
-            $nom = 0;
-            foreach ($base_case->keyed_case_features as $feature_id => $value) {
-                $nom += ((($value ^ $case->keyed_case_features[$feature_id]) ? 0 : 1) * $feature_weights[$feature_id]);
-            }
-            $base_case->similarity = $nom / $feature_weights->sum();
+            $base_case->similarity = $base_case->calculateSimilarity($case);
             
             // Calculates euclidean distance
             $sum = 0;
