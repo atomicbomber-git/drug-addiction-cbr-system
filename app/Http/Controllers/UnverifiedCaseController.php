@@ -105,10 +105,6 @@ class UnverifiedCaseController extends Controller
             'solution:id,content'
         ]);
 
-        $case->keyed_case_features = $case->case_features->mapWithKeys(function($case_feature) {
-            return [$case_feature['feature_id'] => $case_feature['value']];
-        });
-
         foreach ($base_cases as $base_case) {
             $base_case->similarity = $base_case->calculateSimilarity($case);
         }
@@ -231,7 +227,7 @@ class UnverifiedCaseController extends Controller
         }
 
         $most_similar_cases = $base_cases
-            ->sortBy('distance')
+            ->sortByDesc('similarity')
             ->values()
             ->take(3);
 
