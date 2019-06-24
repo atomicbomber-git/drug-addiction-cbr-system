@@ -39,25 +39,27 @@
             <h1 class="h4 mt-5"> Hasil Diagnosis </h1>
             <hr class="mt-0"/>
 
-            <table class='table table-sm table-striped'>
-                <thead class="thead thead-dark">
-                     <tr>
-                         <th> Tahapan </th>
-                         <th> Solusi </th>
-                         <th> Similaritas </th>
-                         <th> Jarak Euclidean </th>
-                     </tr>
-                </thead>
-                <tbody>
-                     <tr>
-                        <td> {{ $case->stage }} </td>
-                        <td> {{ $case->solution->content }} </td>
-                        <td> {{ $most_similar_case->similarity * 100 }}% </td>
-                        <td> {{ $most_similar_case->distance }} </td>
-                     </tr>
-                </tbody>
-             </table>
-             
+            <div class="table-responsive">
+                <table class='table table-sm table-striped'>
+                    <thead class="thead thead-dark">
+                         <tr>
+                             <th class="align-middle"> Tahapan </th>
+                             <th class="align-middle"> Solusi </th>
+                             <th class="align-middle"> Similaritas </th>
+                             <th class="align-middle"> Jarak Euclidean </th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                         <tr>
+                            <td> {{ $case->stage }} </td>
+                            <td> {{ $case->solution->content }} </td>
+                            <td> {{ $most_similar_case->similarity * 100 }}% </td>
+                            <td> {{ $most_similar_case->distance }} </td>
+                         </tr>
+                    </tbody>
+                 </table>
+            </div>
+
              <h1 class="h4 mt-5"> Saran </h1>
              <hr class="mt-0"/>
 

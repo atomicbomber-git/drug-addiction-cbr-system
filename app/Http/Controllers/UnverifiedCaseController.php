@@ -101,7 +101,7 @@ class UnverifiedCaseController extends Controller
             ->first();
 
         $stage = $base_cases
-            ->sortByDesc('similarity')
+            ->sortByDesc('distance')
             ->values()
             ->take(3)
             ->mode("stage")[0];
