@@ -75,13 +75,6 @@ class UnverifiedCaseController extends Controller
     {
         $case = session('new_case');
 
-        // Get all features
-        $feature_weights = Feature::select('id', 'weight')
-            ->get()
-            ->mapWithKeys(function ($feature) {
-                return [$feature->id => $feature->weight];
-            });
-
         // Get all the base cases
         $base_cases = CaseRecord::select('id', 'stage', 'solution_id')
             ->with([
@@ -92,14 +85,6 @@ class UnverifiedCaseController extends Controller
             ->get()
             ->keyBy('id');
 
-        $base_cases->transform(function ($base_case) {
-            $base_case->keyed_case_features = 
-                $base_case->case_features->mapWithKeys(function($case_feature) {
-                    return [$case_feature['feature_id'] => $case_feature['value']];
-                });
-            return $base_case;
-        });
-
         $case->load([
             'case_features:feature_id,case_id,value',
             'solution:id,content'
@@ -107,10 +92,11 @@ class UnverifiedCaseController extends Controller
 
         foreach ($base_cases as $base_case) {
             $base_case->similarity = $base_case->calculateSimilarity($case);
+            $base_case->distance = $base_case->calculateDistance($case);
         }
 
         $most_similar_case = $base_cases
-            ->sortByDesc('similarity')
+            ->sortBy('distance')
             ->values()
             ->first();
 
@@ -185,13 +171,6 @@ class UnverifiedCaseController extends Controller
 
     public function retrieve(CaseRecord $case)
     {
-        // Get all features
-        $feature_weights = Feature::select('id', 'weight')
-            ->get()
-            ->mapWithKeys(function ($feature) {
-                return [$feature->id => $feature->weight];
-            });
-
         // Get all the base cases
         $base_cases = CaseRecord::select('id', 'stage', 'solution_id')
             ->with([
@@ -202,14 +181,6 @@ class UnverifiedCaseController extends Controller
             ->get()
             ->keyBy('id');
 
-        $base_cases->transform(function ($base_case) {
-            $base_case->keyed_case_features = 
-                $base_case->case_features->mapWithKeys(function($case_feature) {
-                    return [$case_feature['feature_id'] => $case_feature['value']];
-                });
-            return $base_case;
-        });
-
         $case->load([
             'case_features:feature_id,case_id,value',
             'solution:id,content'
@@ -217,17 +188,11 @@ class UnverifiedCaseController extends Controller
 
         foreach ($base_cases as $base_case) {
             $base_case->similarity = $base_case->calculateSimilarity($case);
-            
-            // Calculates euclidean distance
-            $sum = 0;
-            foreach ($base_case->keyed_case_features as $feature_id => $value) {
-                $sum += pow($value - $case->keyed_case_features[$feature_id], 2);
-            }
-            $base_case->distance = sqrt($sum);
+            $base_case->distance = $base_case->calculateDistance($case);
         }
 
         $most_similar_cases = $base_cases
-            ->sortByDesc('similarity')
+            ->sortBy('distance')
             ->values()
             ->take(3);
 

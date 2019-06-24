@@ -45,13 +45,15 @@
                          <th> Tahapan </th>
                          <th> Solusi </th>
                          <th> Similaritas </th>
+                         <th> Jarak Euclidean </th>
                      </tr>
                 </thead>
                 <tbody>
                      <tr>
-                         <td> {{ $case->stage }} </td>
-                         <td> {{ $case->solution->content }} </td>
-                         <td> {{ $most_similar_case->similarity * 100 }}% </td>
+                        <td> {{ $case->stage }} </td>
+                        <td> {{ $case->solution->content }} </td>
+                        <td> {{ $most_similar_case->similarity * 100 }}% </td>
+                        <td> {{ $most_similar_case->distance }} </td>
                      </tr>
                 </tbody>
              </table>

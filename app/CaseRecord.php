@@ -46,6 +46,15 @@ class CaseRecord extends Model
         });
     }
 
+    public function calculateDistance(CaseRecord $case_record)
+    {
+        $sum = 0;
+        foreach ($this->keyed_case_features as $feature_id => $value) {
+            $sum += pow($value - $case_record->keyed_case_features[$feature_id], 2);
+        }
+        return sqrt($sum);
+    }
+
     public function calculateSimilarity(CaseRecord $case_record)
     {
         $case_features_a = $this->keyed_case_features;
