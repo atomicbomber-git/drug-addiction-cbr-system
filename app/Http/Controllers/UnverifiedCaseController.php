@@ -95,11 +95,6 @@ class UnverifiedCaseController extends Controller
             $base_case->distance = $base_case->calculateDistance($case);
         }
 
-        $most_similar_case = $base_cases
-            ->sortBy('distance')
-            ->values()
-            ->first();
-
         $closest_base_cases = $base_cases
             ->sortBy('distance')
             ->values()
@@ -120,7 +115,7 @@ class UnverifiedCaseController extends Controller
             'solution:id,content'
         ]);
 
-        return view('unverified_case.guest_retrieve', compact('case', 'most_similar_case'));
+        return view('unverified_case.guest_retrieve', compact('case', 'closest_base_case'));
     }
     
     public function store()

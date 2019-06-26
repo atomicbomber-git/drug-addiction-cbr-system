@@ -53,8 +53,8 @@
                          <tr>
                             <td> {{ $case->stage }} </td>
                             <td> {{ $case->solution->content }} </td>
-                            <td> {{ $most_similar_case->similarity * 100 }}% </td>
-                            <td> {{ $most_similar_case->distance }} </td>
+                            <td> {{ $closest_base_case->similarity * 100 }}% </td>
+                            <td> {{ $closest_base_case->distance }} </td>
                          </tr>
                     </tbody>
                  </table>
