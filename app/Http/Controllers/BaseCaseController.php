@@ -14,7 +14,7 @@ class BaseCaseController extends Controller
     public function index()
     {
         $base_cases = CaseRecord::query()
-            ->select('id', 'stage', 'solution_id', 'recommendation')
+            ->select('id', 'stage', 'solution_id')
             ->verified()
             ->orderByDesc('updated_at')
             ->with([

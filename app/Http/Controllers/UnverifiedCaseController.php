@@ -20,7 +20,7 @@ class UnverifiedCaseController extends Controller
     public function index()
     {
         $cases = CaseRecord::query()
-            ->select('id', 'stage', 'solution_id', 'recommendation')
+            ->select('id', 'stage', 'solution_id')
             ->unverified()
             ->with([
                 'solution:id,content',
@@ -100,18 +100,19 @@ class UnverifiedCaseController extends Controller
             ->values()
             ->first();
 
-        $stage = $base_cases
+        $closest_base_cases = $base_cases
             ->sortBy('distance')
             ->values()
-            ->take(3)
-            ->mode("stage")[0];
+            ->take(3);
+
+        $stage = $closest_base_cases->mode("stage")[0];
+        $closest_base_case = $closest_base_cases->firstWhere("stage", $stage);
 
         $case = CaseRecord::find($case->id);
 
         $case->update([
             "stage" => $stage,
-            "solution_id" => $most_similar_case->solution_id,
-            "recommendation" => $most_similar_case->recommendation,
+            "solution_id" => $closest_base_case->solution_id,
         ]);
 
         $case->load([

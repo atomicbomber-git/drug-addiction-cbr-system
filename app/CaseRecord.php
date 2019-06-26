@@ -11,7 +11,7 @@ class CaseRecord extends Model
     protected $perPage = 10;
 
     public $fillable = [
-        'stage', 'solution_id', 'recommendation', 'verified'
+        'stage', 'solution_id', 'verified'
     ];
 
     const STAGES = [
