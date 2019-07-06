@@ -97,13 +97,20 @@ class UnverifiedCaseController extends Controller
 
         $closest_base_cases = $base_cases
             ->sortBy('distance')
-            ->sortBy('stage')
-            ->sortBy('similarity')
             ->values()
             ->take(3);
 
         $stage = $closest_base_cases->mode("stage")[0];
-        $closest_base_case = $closest_base_cases->firstWhere("stage", $stage);
+        
+        $closest_base_case = $closest_base_cases->sort(function ($a, $b) {
+            if ($a->distance == $b->distance) {
+                return $a->similarity < $b->similarity ? 1 : -1;
+            }
+            else {
+                return $a->distance > $b->distance ? 1 : -1;
+            }
+        })
+        ->first();
 
         $case = CaseRecord::find($case->id);
 
