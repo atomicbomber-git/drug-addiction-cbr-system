@@ -2,10 +2,12 @@
 @section('title', 'Home')
 @section('content')
 
-<img
-    style="width: 100%; height: auto"
-    src="{{ asset("home.jpg") }}"
-    alt="Gambar Ilustrasi Narkoba">
+<div style="background: black; height: 100%">
+    <img
+        style="display: block; margin: auto"
+        src="{{ asset("home.jpg") }}"
+        alt="Gambar Ilustrasi Narkoba">
+</div>
 
 <div class="container my-5">
     
