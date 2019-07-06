@@ -63,7 +63,7 @@
                 </table>
             </div>
 
-            <h1 class="h4 mt-5"> Basis Kasus Dengan Nilai Similaritas Tertinggi dengan Kasus Ini </h1>
+            <h1 class="h4 mt-5"> Basis Kasus Dengan Jarak Terdekat dengan Kasus Ini </h1>
             <hr class="mt-0"/>
 
             <div class="table-responsive">
