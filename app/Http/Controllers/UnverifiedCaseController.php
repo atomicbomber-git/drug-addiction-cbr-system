@@ -97,6 +97,8 @@ class UnverifiedCaseController extends Controller
 
         $closest_base_cases = $base_cases
             ->sortBy('distance')
+            ->sortBy('stage')
+            ->sortBy('similarity')
             ->values()
             ->take(3);
 
