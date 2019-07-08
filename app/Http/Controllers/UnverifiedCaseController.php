@@ -104,10 +104,10 @@ class UnverifiedCaseController extends Controller
         
         $closest_base_case = $closest_base_cases->sort(function ($a, $b) {
             if ($a->distance == $b->distance) {
-                return $a->similarity < $b->similarity ? 1 : -1;
+                return $a->similarity > $b->similarity ? 1 : -1;
             }
             else {
-                return $a->distance > $b->distance ? 1 : -1;
+                return $a->distance < $b->distance ? 1 : -1;
             }
         })
         ->first();
