@@ -101,17 +101,18 @@ class UnverifiedCaseController extends Controller
             ->take(3);
 
         $stage = $closest_base_cases->mode("stage")[0];
-        
         $closest_base_cases = $closest_base_cases
             ->where("stage", $stage)
-            ->sort(function ($a, $b) {
-                if ($a->distance == $b->distance) {
-                    return $a->similarity > $b->similarity ? 1 : -1;
+            ->sort(
+                function ($a, $b) {
+                    if ($a->distance == $b->distance) {
+                        return $a->similarity < $b->similarity ? 1 : -1;
+                    }
+                    else {
+                        return $a->distance > $b->distance ? 1 : -1;
+                    }
                 }
-                else {
-                    return $a->distance < $b->distance ? 1 : -1;
-                }
-        });
+            );
 
         $closest_base_case = $closest_base_cases->first();
         $case = CaseRecord::find($case->id);
@@ -201,7 +202,14 @@ class UnverifiedCaseController extends Controller
         $most_similar_cases = $base_cases
             ->sortBy('distance')
             ->values()
-            ->take(3);
+            ->take(3)
+            ->sort(function ($a, $b) {
+                if ($a->distance == $b->distance) {
+                    return $a->similarity < $b->similarity ? 1 : -1;
+                } else {
+                    return $a->distance > $b->distance ? 1 : -1;
+                }
+            });
 
         return view('unverified_case.retrieve', compact('case', 'most_similar_cases'));
     }
