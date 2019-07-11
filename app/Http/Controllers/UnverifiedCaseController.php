@@ -32,7 +32,7 @@ class UnverifiedCaseController extends Controller
 
         return view('unverified_case.index', compact('cases'));
     }
-    
+
     public function create()
     {
         $features = Feature::select('description', 'id')->get();
@@ -48,7 +48,19 @@ class UnverifiedCaseController extends Controller
     public function guestStore()
     {
         $data = $this->validate(request(), [
-            'features' => 'array',
+            'features' => ['array', function($attribute, $features, $fail) {
+                $atLeastOneFilled = false;
+                foreach ($features as $feature) {
+                    if (isset($feature["value"])) {
+                        $atLeastOneFilled = true;
+                        break;
+                    }
+                }
+
+                if (! $atLeastOneFilled) {
+                    $fail("Anda belum menjawab pertanyaan, silahkan menjawab pertanyaan terlebih dahulu.");
+                }
+            }],
             'features.*.id' => 'required|exists:features',
             'features.*.value' => 'nullable'
         ]);
@@ -129,7 +141,7 @@ class UnverifiedCaseController extends Controller
 
         return view('unverified_case.guest_retrieve', compact('case', 'closest_base_case'));
     }
-    
+
     public function store()
     {
         $data = $this->validate(request(), [
@@ -154,7 +166,7 @@ class UnverifiedCaseController extends Controller
             ->route('unverified_case.index')
             ->with('message-success', __('messages.create.success'));
     }
-    
+
     public function edit(CaseRecord $case)
     {
         $case->load([
@@ -213,7 +225,7 @@ class UnverifiedCaseController extends Controller
 
         return view('unverified_case.retrieve', compact('case', 'most_similar_cases'));
     }
-    
+
     public function update(CaseRecord $case)
     {
         $data = $this->validate(request(), [
@@ -250,7 +262,7 @@ class UnverifiedCaseController extends Controller
             ->route('unverified_case.index')
             ->with('message-success', __('messages.update.success'));
     }
-    
+
     public function delete(CaseRecord $case) {
         DB::transaction(function() use($case) {
             $case->case_features()->delete();

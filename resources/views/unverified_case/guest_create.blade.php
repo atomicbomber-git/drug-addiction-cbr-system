@@ -13,7 +13,7 @@
             <li class="breadcrumb-item active"> Konsultasi </li>
         </ol>
     </nav>
-    
+
     <div class="card">
         <div class="card-header">
             <i class="fa fa-user-md"></i>
@@ -29,7 +29,7 @@
                             value="1"
                             {{ empty(old('features')[$loop->iteration]['value']) ? '' : 'checked' }}
                             name="features[{{ $loop->iteration }}][value]" type="checkbox" class="custom-control-input" id="value-{{ $feature->id }}">
-                        
+
                         <input type="hidden" name="features[{{ $loop->iteration }}][id] }}" value="{{ $feature->id }}">
                         <label class="custom-control-label" for="value-{{ $feature->id }}">
                             {{ $feature->description }}
@@ -37,6 +37,13 @@
                     </div>
                 </div>
                 @endforeach
+
+                @if($errors->has("features"))
+                <div class="alert alert-danger">
+                    <i class="fa fa-warning"></i>
+                    {{ $errors->first("features") }}
+                </div>
+                @endif
 
                 <div class="text-right">
                     <button class="btn btn-primary">
