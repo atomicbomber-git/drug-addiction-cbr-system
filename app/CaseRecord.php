@@ -64,7 +64,7 @@ class CaseRecord extends Model
 
         foreach ($case_features_a as $feature_id => $value) {
             $nominator += (
-                ($value === $case_features_b[$feature_id] ? 1 : 0) * 
+                $this->determineSimilarity($value, $case_features_b[$feature_id]) *
                 $this->determineWeight($value, $case_features_b[$feature_id])
             );
         }
@@ -79,13 +79,32 @@ class CaseRecord extends Model
         return $nominator / $denominator;
     }
 
-    private function determineWeight($a, $b)
+    private function determineSimilarity($a, $b)
     {
         if ($a === 0 && $b === 0) {
             return 0;
         }
         else if ($a === 0 && $b === 1) {
             return 0;
+        }
+        else if ($a === 1 && $b === 0) {
+            return 0;
+        }
+        else if ($a === 1 && $b === 1) {
+            return 1;
+        }
+        else {
+            throw new \Exception("Value error.");
+        }
+    }
+
+    private function determineWeight($a, $b)
+    {
+        if ($a === 0 && $b === 0) {
+            return 0;
+        }
+        else if ($a === 0 && $b === 1) {
+            return 1;
         }
         else if ($a === 1 && $b === 0) {
             return 1;
