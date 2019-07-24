@@ -32,10 +32,11 @@
                 <div class='form-group'>
                     <div class="custom-control custom-checkbox">
                         <input
+                            disabled
                             value="1"
                             {{ $case_feature->value ? 'checked' : '' }}
                             name="features[{{ $loop->iteration }}][value]" type="checkbox" class="custom-control-input" id="value-{{ $case_feature->feature_id }}">
-                        
+
                         <input type="hidden" name="features[{{ $loop->iteration }}][feature_id] }}" value="{{ $case_feature->feature_id }}">
                         <label class="custom-control-label" for="value-{{ $case_feature->feature_id }}">
                             {{ $case_feature->feature->description }}
@@ -49,7 +50,7 @@
 
                 <div class='form-group'>
                     <label for='stage'> Tahapan: </label>
-                    <select name='stage' id='stage' class='form-control'>
+                    <select name='stage' id='stage' class='form-control' disabled>
                         @foreach(\App\CaseRecord::STAGES as $stage)
                         <option {{ old('stage', $case->stage) == $stage ? 'selected' : '' }} value='{{ $stage }}'> {{ $stage }} </option>
                         @endforeach

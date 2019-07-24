@@ -96,7 +96,7 @@
                          </tr>
                     </thead>
                     <tbody>
-                        @foreach ($most_similar_cases as $case)
+                        @foreach ($closes_base_cases as $case)
                          <tr>
                              <td> {{ $case->id }} </td>
                              @foreach ($case->case_features as $case_feature)

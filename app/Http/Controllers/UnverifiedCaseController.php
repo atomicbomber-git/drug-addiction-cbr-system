@@ -8,6 +8,7 @@ use App\CaseRecord;
 use App\CaseFeature;
 use App\Feature;
 use App\Solution;
+use App\Rules\AtLeastOneIsChecked;
 
 class UnverifiedCaseController extends Controller
 {
@@ -48,19 +49,7 @@ class UnverifiedCaseController extends Controller
     public function guestStore()
     {
         $data = $this->validate(request(), [
-            'features' => ['array', function($attribute, $features, $fail) {
-                $atLeastOneFilled = false;
-                foreach ($features as $feature) {
-                    if (isset($feature["value"])) {
-                        $atLeastOneFilled = true;
-                        break;
-                    }
-                }
-
-                if (! $atLeastOneFilled) {
-                    $fail("Anda belum menjawab pertanyaan, silahkan menjawab pertanyaan terlebih dahulu.");
-                }
-            }],
+            'features' => ['array', new AtLeastOneIsChecked],
             'features.*.id' => 'required|exists:features',
             'features.*.value' => 'nullable'
         ]);
@@ -86,51 +75,10 @@ class UnverifiedCaseController extends Controller
     public function guestRetrieve()
     {
         $case = session('new_case');
-
-        // Get all the base cases
-        $base_cases = CaseRecord::select('id', 'stage', 'solution_id')
-            ->with([
-                'case_features:case_id,feature_id,value',
-                'solution:id,content'
-            ])
-            ->verified()
-            ->get()
-            ->keyBy('id');
-
-        $case->load([
-            'case_features:feature_id,case_id,value',
-            'solution:id,content'
-        ]);
-
-        foreach ($base_cases as $base_case) {
-            $base_case->similarity = $base_case->calculateSimilarity($case);
-            $base_case->distance = $base_case->calculateDistance($case);
-        }
-
-        $closest_base_cases = $base_cases
-            ->sortBy('distance')
-            ->values()
-            ->take(3);
-
-        $stage = $closest_base_cases->mode("stage")[0];
-        $closest_base_cases = $closest_base_cases
-            ->where("stage", $stage)
-            ->sort(
-                function ($a, $b) {
-                    if ($a->distance == $b->distance) {
-                        return $a->similarity < $b->similarity ? 1 : -1;
-                    }
-                    else {
-                        return $a->distance > $b->distance ? 1 : -1;
-                    }
-                }
-            );
-
-        $closest_base_case = $closest_base_cases->first();
-        $case = CaseRecord::find($case->id);
+        $closest_base_case = $case->getClosestBaseCase();
 
         $case->update([
-            "stage" => $stage,
+            "stage" => $closest_base_case->stage,
             "solution_id" => $closest_base_case->solution_id,
         ]);
 
@@ -139,19 +87,22 @@ class UnverifiedCaseController extends Controller
             'solution:id,content'
         ]);
 
-        return view('unverified_case.guest_retrieve', compact('case', 'closest_base_case'));
+        $features = Feature::select("id")->get();
+        return view('unverified_case.guest_retrieve', compact('case', 'closest_base_case', 'features'));
     }
 
     public function store()
     {
         $data = $this->validate(request(), [
-            'features' => 'array',
+            'features' => ['array', new AtLeastOneIsChecked],
             'features.*.id' => 'required|exists:features,id',
             'features.*.value' => 'nullable'
         ]);
 
-        DB::transaction(function() use($data) {
-            $case = CaseRecord::create(['verified' => 0]);
+        $case = new CaseRecord(['verified' => 0]);
+
+        DB::transaction(function() use($data, $case) {
+            $case->save();
 
             foreach ($data['features'] as $feature) {
                 CaseFeature::create([
@@ -161,6 +112,12 @@ class UnverifiedCaseController extends Controller
                 ]);
             }
         });
+
+        $closest_base_case = $case->getClosestBaseCase();
+        $case->update([
+            "stage" => $closest_base_case->stage,
+            "solution_id" => $closest_base_case->solution_id,
+        ]);
 
         return redirect()
             ->route('unverified_case.index')
@@ -191,72 +148,19 @@ class UnverifiedCaseController extends Controller
 
     public function retrieve(CaseRecord $case)
     {
-        // Get all the base cases
-        $base_cases = CaseRecord::select('id', 'stage', 'solution_id')
-            ->with([
-                'case_features:case_id,feature_id,value',
-                'solution:id,content'
-            ])
-            ->verified()
-            ->get()
-            ->keyBy('id');
+        $closes_base_cases = $case->getClosestBaseCases()
+            ->take(CaseRecord::MAX_NEIGHBOR_COUNT);
 
-        $case->load([
-            'case_features:feature_id,case_id,value',
-            'solution:id,content'
-        ]);
-
-        foreach ($base_cases as $base_case) {
-            $base_case->similarity = $base_case->calculateSimilarity($case);
-            $base_case->distance = $base_case->calculateDistance($case);
-        }
-
-        $most_similar_cases = $base_cases
-            ->sortBy('distance')
-            ->values()
-            ->take(3)
-            ->sort(function ($a, $b) {
-                if ($a->distance == $b->distance) {
-                    return $a->similarity < $b->similarity ? 1 : -1;
-                } else {
-                    return $a->distance > $b->distance ? 1 : -1;
-                }
-            });
-
-        return view('unverified_case.retrieve', compact('case', 'most_similar_cases'));
+        return view('unverified_case.retrieve', compact('case', 'closes_base_cases'));
     }
 
     public function update(CaseRecord $case)
     {
         $data = $this->validate(request(), [
-            'features' => 'array',
-            'features.*.feature_id' => 'required|exists:features,id',
-            'features.*.value' => 'nullable',
-            'stage' => 'nullable|string',
             'solution_id' => 'nullable|exists:solutions,id'
         ]);
 
-        $features = collect($data["features"])
-            ->keyBy('feature_id')
-            ->map(function ($record, $key) {
-                if (empty($record['value'])) {
-                    $record['value'] = 0;
-                }
-                return $record;
-            });
-
-        DB::transaction(function() use($data, $case, $features) {
-            foreach ($features as $feature) {
-                CaseFeature::where('case_id', $case->id)
-                    ->where('feature_id', $feature['feature_id'])
-                    ->update(['value' => $feature['value']]);
-
-                $case->update([
-                    'stage' => $data['stage'],
-                    'solution_id' => $data['solution_id']
-                ]);
-            }
-        });
+        $case->update($data);
 
         return redirect()
             ->route('unverified_case.index')

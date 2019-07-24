@@ -10,6 +10,8 @@ class CaseRecord extends Model
 
     protected $perPage = 10;
 
+    const MAX_NEIGHBOR_COUNT = 3;
+
     public $fillable = [
         'stage', 'solution_id', 'verified'
     ];
@@ -41,9 +43,49 @@ class CaseRecord extends Model
 
     public function getKeyedCaseFeaturesAttribute()
     {
+        $this->loadMissing("case_features:case_id,feature_id,value");
         return $this->case_features->mapWithKeys(function($case_feature) {
             return [$case_feature['feature_id'] => $case_feature['value']];
         });
+    }
+
+    public function getClosestBaseCases()
+    {
+        $base_cases = CaseRecord::select('id', 'stage', 'solution_id')
+            ->with(['case_features:case_id,feature_id,value', 'solution:id,content'])
+            ->verified()
+            ->get();
+
+        foreach ($base_cases as $base_case) {
+            $base_case->similarity = $base_case->calculateSimilarity($this);
+            $base_case->distance = $base_case->calculateDistance($this);
+        }
+
+        return $base_cases->sortBy("distance")->values();
+    }
+
+    public function getClosestBaseCase($max_neighbor_count = self::MAX_NEIGHBOR_COUNT)
+    {
+        $closest_base_cases = $this->getClosestBaseCases()
+            ->values()
+            ->take($max_neighbor_count);
+
+        $stage = $closest_base_cases->mode("stage")[0];
+
+        $closest_base_cases = $closest_base_cases
+            ->where("stage", $stage)
+            ->sort(
+                function ($a, $b) {
+                    if ($a->distance == $b->distance) {
+                        return $a->similarity < $b->similarity ? 1 : -1;
+                    }
+                    else {
+                        return $a->distance > $b->distance ? 1 : -1;
+                    }
+                }
+            );
+
+        return $closest_base_cases->first();
     }
 
     public function calculateDistance(CaseRecord $case_record)

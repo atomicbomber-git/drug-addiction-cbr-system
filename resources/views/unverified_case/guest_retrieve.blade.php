@@ -46,7 +46,6 @@
                              <th class="align-middle"> Tahapan </th>
                              <th class="align-middle"> Solusi </th>
                              <th class="align-middle"> Similaritas </th>
-                             <th class="align-middle"> Jarak Euclidean </th>
                          </tr>
                     </thead>
                     <tbody>
@@ -54,11 +53,54 @@
                             <td> {{ $case->stage }} </td>
                             <td> {{ $case->solution->content }} </td>
                             <td> {{ $closest_base_case->similarity * 100 }}% </td>
-                            <td> {{ $closest_base_case->distance }} </td>
                          </tr>
                     </tbody>
                  </table>
             </div>
+
+            <h1 class="h4 mt-5"> Perbandingan dengan Kasus Terdekat </h1>
+            <hr class="mt-0"/>
+
+            <div class="table-responsive">
+                <table class='table table-sm table-striped'>
+                    <thead class="thead thead-dark">
+                        <tr>
+                            <th> Kasus </th>
+                            @foreach ($features as $feature)
+                            <th> F{{ $feature->id }} </th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td> Kasus Ini </td>
+                            @foreach ($features as $feature)
+                            <td>
+                                @if ($case->keyed_case_features[$feature->id])
+                                <i class="fa fa-check text-success"></i>
+                                @else
+                                <i class="fa fa-check text-danger"></i>
+                                @endif
+                            </td>
+                            @endforeach
+                        </tr>
+
+                        <tr>
+                            <td> Kasus #{{ $closest_base_case->id }} </td>
+                            @foreach ($features as $feature)
+                            <td>
+                                @if ($closest_base_case->keyed_case_features[$feature->id])
+                                <i class="fa fa-check text-success"></i>
+                                @else
+                                <i class="fa fa-check text-danger"></i>
+                                @endif
+                            </td>
+                            @endforeach
+                        </tr>
+                    </tbody>
+                 </table>
+            </div>
+
 
              <h1 class="h4 mt-5"> Saran </h1>
              <hr class="mt-0"/>

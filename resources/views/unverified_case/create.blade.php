@@ -21,12 +21,12 @@
             Tambah Kasus Baru
         </div>
         <div class="card-body">
-            
+
             <form method='POST' action='{{ route('unverified_case.store') }}'>
                 @csrf
                 <h1 class="h4"> Gejala </h1>
                 <hr>
-            
+
                 @foreach ($features as $feature)
                 <div class='form-group'>
                     <div class="custom-control custom-checkbox">
@@ -34,7 +34,7 @@
                             value="1"
                             {{ empty(old('features')[$loop->iteration]['value']) ? '' : 'checked' }}
                             name="features[{{ $loop->iteration }}][value]" type="checkbox" class="custom-control-input" id="value-{{ $feature->id }}">
-                        
+
                         <input type="hidden" name="features[{{ $loop->iteration }}][id] }}" value="{{ $feature->id }}">
                         <label class="custom-control-label" for="value-{{ $feature->id }}">
                             {{ $feature->description }}
@@ -43,13 +43,20 @@
                 </div>
                 @endforeach
 
+                @if($errors->has("features"))
+                <div class="alert alert-danger">
+                    <i class="fa fa-warning"></i>
+                    {{ $errors->first("features") }}
+                </div>
+                @endif
+
                 <div class="form-group text-right">
                     <button class="btn btn-primary">
                         Tambah Data
                         <i class="fa fa-check"></i>
                     </button>
                 </div>
-            
+
             </form>
         </div>
     </div>
