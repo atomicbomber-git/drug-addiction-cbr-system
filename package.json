@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "font-awesome": "^4.7.0",
+        "jquery-parallax": "^1.0.1",
         "sweetalert": "^2.1.2"
     }
 }
