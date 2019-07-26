@@ -24,7 +24,10 @@
                 @csrf
                 @foreach ($features as $feature)
                 <div class='form-group'>
-                    <div class="custom-control custom-checkbox">
+                    <span class="d-inline-block" style="width: 2rem">
+                        F{{ $feature->id }}
+                    </span>
+                    <div class="custom-control custom-checkbox d-inline-block">
                         <input
                             value="1"
                             {{ empty(old('features')[$loop->iteration]['value']) ? '' : 'checked' }}
