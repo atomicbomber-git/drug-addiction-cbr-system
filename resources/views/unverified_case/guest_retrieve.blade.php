@@ -27,12 +27,17 @@
 
             @foreach ($case->case_features as $case_feature)
                 <div>
-                    @if ($case_feature->value)
-                    <i class="fa fa-check text-success"></i>
-                    @else
-                    <i class="fa fa-times text-danger"></i>
-                    @endif
-                    {{ $case_feature->feature->description }}
+                    <span class="d-inline-block" style="width: 2rem">
+                        F{{ $case_feature->feature->id }}
+                    </span>
+                    <div class="d-inline-block">
+                        @if ($case_feature->value)
+                        <i class="fa fa-check text-success"></i>
+                        @else
+                        <i class="fa fa-times text-danger"></i>
+                        @endif
+                        {{ $case_feature->feature->description }}
+                    </div>
                 </div>
             @endforeach
 
