@@ -12,15 +12,17 @@
 <body>
     @include('shared.navbar')
 
-    <div style="min-height: 80vh">
+    <article style="margin-bottom: 140px">
         @yield('content')
-    </div>
+    </article>
 
-    <div class="bg-dark text-light">
+    <footer
+        style="position: fixed; bottom: 0; left: 0; right: 0"
+        class="d-block bg-dark text-light">
         <div class="container py-4 text-center">
             © {{ now()->format('Y') }} - {{ config('app.name') }}
         </div>
-    </div>
+    </footer>
 
     <script src="{{ asset('js/app.js') }}"></script>]
     @yield('scripts')
