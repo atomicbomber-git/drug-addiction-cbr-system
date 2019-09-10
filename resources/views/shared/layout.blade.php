@@ -19,7 +19,7 @@
     <footer
         style="position: fixed; bottom: 0; left: 0; right: 0"
         class="d-block bg-dark text-light">
-        <div class="container py-4 text-center">
+        <div class="container py-3 text-center">
             © {{ now()->format('Y') }} - {{ config('app.name') }}
         </div>
     </footer>
