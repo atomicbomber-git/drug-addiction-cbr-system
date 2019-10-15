@@ -85,18 +85,10 @@ class CaseRecord extends Model
             ->take($max_neighbor_count); /* Hanya mengambil sebagian dari seluruh basis kasus yang ada. Jumlah yang diambil ditentukan oleh $max_neighbor_count */
 
         /*
-            $stage melambangkan `tahapan` yang paling banyak muncul dibasis2 kasus yang telah didapat sebelumnya,
-            mode() artinya mengambil modus (nilai yang paling banyak muncul) untuk kolom tahapan (stage) pada
-            daftar basis kasus
-        */
-        $stage = $closest_base_cases->mode("stage")[0];
-
-        /*
             Disini basis kasus pada langkah sebelumnya yang memiliki tahapan yang sama dengan tahapan yang paling sering muncul ($stage)
             diurutkan berdasarkan nilai jarak euclidean dan prioritasnya
         */
         $closest_base_cases = $closest_base_cases
-            ->where("stage", $stage)
             ->sort(
                 function ($a, $b) {
                     if ($a->distance == $b->distance) { /* Jika jarak basis kasus A & basis kasus B terhadap jarak kasus ini sama, maka: ... */
